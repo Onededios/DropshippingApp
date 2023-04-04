@@ -1,3 +1,4 @@
+// TODO Falta hacer las relaciones del programa
 @startuml
 !theme reddress-darkgreen
 

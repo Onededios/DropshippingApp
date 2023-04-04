@@ -31,4 +31,37 @@ https://onededios.github.io/DropshippingApp/Menu.html
 ### UML Use Case Diagram
 ![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/useCaseDiagram.pml)
 ### UML Secuence Diagram
-![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceDiagram.pml)
+#### Add Default Objects
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceADDiagram.pml)
+#### Drop Default Objects
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceDDDiagram.pml)
+#### Create New Vendor
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceCVDiagram.pml)
+#### Create New Client 
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceCCDiagram.pml)
+#### Create New Product 
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceCPDiagram.pml)
+#### Create New Order 
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceCODiagram.pml)
+#### List All Objects
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceLADiagram.pml)
+#### List Vendors
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceLVDiagram.pml)
+#### List Clients
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceLCDiagram.pml)
+#### List Products
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceLPDiagram.pml)
+#### List Orders
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceLODiagram.pml)
+#### List Products by Vendor
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceLPVDiagram.pml)
+#### List Orders by Client
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceLOCDiagram.pml)
+#### Edit Vendors
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceEVDiagram.pml)
+#### Edit Clients
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceECDiagram.pml)
+#### Edit Products
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceEPDiagram.pml)
+#### Edit Orders
+![alt](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceEODiagram.pml)

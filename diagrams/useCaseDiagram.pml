@@ -1,3 +1,4 @@
+// TODO Falta hacer el diagrama de secuencia
 @startuml
 !theme reddress-darkgreen
 skinparam actorStyle awesome
