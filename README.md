@@ -176,6 +176,15 @@ Controller "1" *-- "*" Product
 Controller "1" *-- "*" Vendor
 ```
 
-### UML Usage Cases Diagram
+### UML Use Case Diagram
+
+```plantuml
+@startuml
+(First usecase)
+(Another usecase) as (UC2)
+usecase UC3
+usecase (Last\nusecase) as UC4
+@enduml
+```
 
 ### UML Secuence Diagram
