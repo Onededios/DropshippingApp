@@ -31,6 +31,13 @@ public class Main {
                     editConsole.stopScreen(menuOpt);
                     break;
                 case "DD":
+                    editConsole.clearScreen();
+                    if (controller.getDefaultObjectsClient().size() > 0) {
+                        controller.dropDefaultObjects();
+                        System.out.println("Default objects dropped.");
+                    }
+                    else {System.out.println("Error: There are no default objects.");}
+                    editConsole.stopScreen(menuOpt);
                     break;
                 case "CV":
                     do {

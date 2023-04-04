@@ -1,12 +1,10 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-
 public class Vendor {
     // * Attributes
     private int vendorId;
     private String vendorName;
-    private LocalDate vendorRegDate;
+    private final LocalDate vendorRegDate;
     private boolean vendorActive;
     private ArrayList<Product> products;
     Controller controller = new Controller();
@@ -17,7 +15,7 @@ public class Vendor {
         this.vendorName = vendorName;
         this.vendorRegDate = LocalDate.now();
         this.vendorActive = vendorActive;
-        this.products = new ArrayList<Product>();
+        this.products = new ArrayList<>();
     }
 
     // * Getters and Setters

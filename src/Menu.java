@@ -295,7 +295,31 @@ public class Menu {
 
     // ! EDIT
     // TODO Falta por hacer el menu de editar clientes
+    /*public void editClientMenu(int clientID) {
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("             Edit Client            ");
+        System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Actual Values           ");
+        System.out.println("    ─────────────────────────────   ");
+        System.out.println("     Name: "+name);
+        System.out.println("     Active: "+active);
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Change Values           ");
+        System.out.println("    ─────────────────────────────   ");
+        System.out.println("     CN. Change Name                ");
+        System.out.println("     CA. Change Active              ");
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
+        System.out.println("     FS. Finish and Save            ");
+        System.out.println("     EW. Exit Without Saving        ");
+        System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+    }*/
     // TODO Falta por hacer el menu de editar productos
+    public void editProductMenu() {}
     // TODO Falta por hacer el menu de editar proveedores
+    public void editVendorMenu() {}
     // TODO Falta por hacer el menu de editar ordenes
+    public void editOrderMenu() {}
 }
