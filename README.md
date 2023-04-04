@@ -26,8 +26,8 @@ https://onededios.github.io/DropshippingApp/Menu.html
 
 ## UML Diagrams
 ### UML Class Diagram
-![alt](https://www.plantuml.com/plantuml/svg/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/classDiagram.pml)
+![alt](https://www.plantuml.com/plantuml/svg/~1proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/classDiagram.pml)
 ### UML Use Case Diagram
-![alt](https://www.plantuml.com/plantuml/svg/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/useCaseDiagram.pml)
+![alt](https://www.plantuml.com/plantuml/svg/~1proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/useCaseDiagram.pml)
 ### UML Secuence Diagram
-![alt](https://www.plantuml.com/plantuml/svg/proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceDiagram.pml)
+![alt](https://www.plantuml.com/plantuml/svg/~1proxy?cache=no&src=https://raw.githubusercontent.com/Onededios/DropshippingApp/master/diagrams/secuenceDiagram.pml)
