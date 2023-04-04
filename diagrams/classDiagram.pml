@@ -1,5 +1,5 @@
 @startuml
-!theme crt-green
+!theme reddress-darkgreen
 
 class Menu {
 ~ Controller controller
