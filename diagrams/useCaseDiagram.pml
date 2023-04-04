@@ -1,0 +1,7 @@
+@startuml
+Bob -> Alice : hello
+@enduml
+
+@startuml
+version
+@enduml
