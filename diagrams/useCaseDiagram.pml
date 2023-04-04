@@ -2,22 +2,22 @@
 !theme crt-green
 skinparam actorStyle awesome
 
-left to right direction
+top to bottom direction
 actor "User" as usr
 
-rectangle Default {
+package Default {
  usecase "Add default objects" as AD
  usecase "Drop default objects" as DD
 }
 
-rectangle Create {
+package Create {
  usecase "Create new Vendor" as CV
  usecase "Create new Client" as CC
  usecase "Create new Product" as CP
  usecase "Create new Order" as CO
 }
 
-rectangle List {
+package List {
  usecase "List All Objects" as LA
  usecase "List Vendors" as LV
  usecase "List Clients" as LC
@@ -27,7 +27,7 @@ rectangle List {
  usecase "List Orders by Client" as LOC
 }
 
-rectangle Edit {
+package Edit {
  usecase "Edit Vendors" as EV
  usecase "Edit Clients" as EC
  usecase "Edit Products" as EP
