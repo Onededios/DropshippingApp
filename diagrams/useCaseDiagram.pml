@@ -2,7 +2,6 @@
 !theme crt-green
 skinparam actorStyle awesome
 
-top to bottom direction
 actor "User" as usr
 
 package Default {
