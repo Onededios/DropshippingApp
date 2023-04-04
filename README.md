@@ -1,18 +1,11 @@
 # DropshippingApp
 This is just a program demanded by my assignment of programming in class.
-It includes 10 classes:
-- Main
-- Menu
-- Console
-- Controller
-- Read
-- Order
-- Client
-- Vendor
-- Product
+
+It includes 10 classes: **Main, Menu, Console, Controller, Read, Order, Client, Vendor, Product**.
 
 With its respectives methods to: **Add default objects, create objects, drop objects, list objects**.
 
+Below you will find the UML diagrams representing the functionallity of the application.
 ## License
 This repository is licensed under the Creative Commons Attribution-ShareAlike (CC-BY-SA) license. This means that you are free to use, share, and modify the code and any derivative works, as long as you give credit to the original creator and share any derivative works under the same license.
 
