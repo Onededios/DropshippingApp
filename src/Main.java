@@ -196,6 +196,9 @@ public class Main {
                         }
                     } while (!option.equals("FS"));
                     break;
+                case "LA":
+                    // TODO Falta hacer el menú de listarlo todo
+                    break;
                 case "LV":
                     menu.listVendorMenu();
                     editConsole.stopScreen(option);

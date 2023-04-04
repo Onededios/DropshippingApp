@@ -30,6 +30,7 @@ public class Menu {
         System.out.println("   ╭─────────────────────────────╮  ");
         System.out.println("                LIST                ");
         System.out.println("    ─────────────────────────────   ");
+        System.out.println("     LA. List All Objects           ");
         System.out.println("     LV. List Vendors               ");
         System.out.println("     LC. List Clients               ");
         System.out.println("     LP. List Products              ");
@@ -199,6 +200,8 @@ public class Menu {
     }
 
     // ! LIST
+    // TODO Falta hacer este menú
+    public void listAllObjectsMenu() {}
     /**
 
      This method displays a list of vendors in a bordered format.

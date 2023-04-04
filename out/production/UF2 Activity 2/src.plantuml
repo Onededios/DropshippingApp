@@ -1,0 +1,256 @@
+@startuml
+
+title __SRC's Class Diagram__\n
+
+  namespace  {
+    class Client {
+        - clientActive : boolean
+        - clientID : int
+        - clientName : String
+        - clientRegDate : LocalDate
+        + getClientActive()
+        + getClientID()
+        + getClientName()
+        + getClientRegDate()
+        + setClientActive()
+        + setClientID()
+        + setClientName()
+        + toString()
+        ~ Client()
+        - getBiggestClientId()
+    }
+  }
+  
+
+  namespace  {
+    class Controller {
+        {static} - clientInstances : ArrayList<Client>
+        {static} - defaultObjectsClient : ArrayList<Integer>
+        {static} - defaultObjectsOrder : ArrayList<Integer>
+        {static} - defaultObjectsProduct : ArrayList<Integer>
+        {static} - defaultObjectsVendor : ArrayList<Integer>
+        {static} - orderInstances : ArrayList<Order>
+        {static} - productInstances : ArrayList<Product>
+        {static} - vendorInstances : ArrayList<Vendor>
+        + addClientToInstances()
+        + addDefaultObjects()
+        + addOrderToInstances()
+        + addProductToInstances()
+        + addProductToOrder()
+        + addProductToVendor()
+        + addVendorToInstances()
+        + dropClientFromInstances()
+        + dropDefaultObjects()
+        + dropOrderFromInstances()
+        + dropProductFromInstances()
+        + dropVendorFromInstances()
+        + getClientInstances()
+        + getDefaultObjectsClient()
+        + getDefaultObjectsOrder()
+        + getDefaultObjectsProduct()
+        + getDefaultObjectsVendor()
+        + getOrderInstances()
+        + getProductInstances()
+        + getVendorInstances()
+    }
+  }
+  
+
+  namespace  {
+    class EditConsole {
+        {static} + BLACK : String
+        {static} + BLACK_BACKGROUND : String
+        {static} + BLACK_BACKGROUND_BRIGHT : String
+        {static} + BLACK_BOLD : String
+        {static} + BLACK_BOLD_BRIGHT : String
+        {static} + BLACK_BRIGHT : String
+        {static} + BLACK_UNDERLINED : String
+        {static} + BLUE : String
+        {static} + BLUE_BACKGROUND : String
+        {static} + BLUE_BACKGROUND_BRIGHT : String
+        {static} + BLUE_BOLD : String
+        {static} + BLUE_BOLD_BRIGHT : String
+        {static} + BLUE_BRIGHT : String
+        {static} + BLUE_UNDERLINED : String
+        {static} + CYAN : String
+        {static} + CYAN_BACKGROUND : String
+        {static} + CYAN_BACKGROUND_BRIGHT : String
+        {static} + CYAN_BOLD : String
+        {static} + CYAN_BOLD_BRIGHT : String
+        {static} + CYAN_BRIGHT : String
+        {static} + CYAN_UNDERLINED : String
+        {static} + GREEN : String
+        {static} + GREEN_BACKGROUND : String
+        {static} + GREEN_BACKGROUND_BRIGHT : String
+        {static} + GREEN_BOLD : String
+        {static} + GREEN_BOLD_BRIGHT : String
+        {static} + GREEN_BRIGHT : String
+        {static} + GREEN_UNDERLINED : String
+        {static} + PURPLE : String
+        {static} + PURPLE_BACKGROUND : String
+        {static} + PURPLE_BACKGROUND_BRIGHT : String
+        {static} + PURPLE_BOLD : String
+        {static} + PURPLE_BOLD_BRIGHT : String
+        {static} + PURPLE_BRIGHT : String
+        {static} + PURPLE_UNDERLINED : String
+        {static} + RED : String
+        {static} + RED_BACKGROUND : String
+        {static} + RED_BACKGROUND_BRIGHT : String
+        {static} + RED_BOLD : String
+        {static} + RED_BOLD_BRIGHT : String
+        {static} + RED_BRIGHT : String
+        {static} + RED_UNDERLINED : String
+        {static} + RESET : String
+        {static} + WHITE : String
+        {static} + WHITE_BACKGROUND : String
+        {static} + WHITE_BACKGROUND_BRIGHT : String
+        {static} + WHITE_BOLD : String
+        {static} + WHITE_BOLD_BRIGHT : String
+        {static} + WHITE_BRIGHT : String
+        {static} + WHITE_UNDERLINED : String
+        {static} + YELLOW : String
+        {static} + YELLOW_BACKGROUND : String
+        {static} + YELLOW_BACKGROUND_BRIGHT : String
+        {static} + YELLOW_BOLD : String
+        {static} + YELLOW_BOLD_BRIGHT : String
+        {static} + YELLOW_BRIGHT : String
+        {static} + YELLOW_UNDERLINED : String
+        + clearScreen()
+        + stopScreen()
+    }
+  }
+  
+
+  namespace  {
+    class Main {
+        {static} + main()
+    }
+  }
+  
+
+  namespace  {
+    class Menu {
+        + createClientMenu()
+        + createOrderMenu()
+        + createProductMenu()
+        + createVendorMenu()
+        + editOrderMenu()
+        + editProductMenu()
+        + editVendorMenu()
+        + endMenu()
+        + listClientMenu()
+        + listOrderByClientMenu()
+        + listOrderMenu()
+        + listProductByVendorMenu()
+        + listProductMenu()
+        + listVendorMenu()
+        + mainMenu()
+    }
+  }
+  
+
+  namespace  {
+    class Order {
+        - orderDate : LocalDate
+        - orderID : int
+        - orderPaid : boolean
+        - productQTY : int
+        - products : ArrayList<Product>
+        - totalPrice : double
+        + Order()
+        + getClient()
+        + getOrderDate()
+        + getOrderID()
+        + getOrderPaid()
+        + getProducts()
+        + setClient()
+        + setOrderID()
+        + setOrderPaid()
+        + setProducts()
+        + toString()
+        - getBiggestOrderId()
+        - getTotalPrice()
+    }
+  }
+  
+
+  namespace  {
+    class Product {
+        - productId : int
+        - productName : String
+        - productNutriScore : char
+        - productPrice : double
+        + Product()
+        + getProductId()
+        + getProductName()
+        + getProductNutriScore()
+        + getProductPrice()
+        + getVendor()
+        + setProductId()
+        + setProductName()
+        + setProductNutriScore()
+        + setProductPrice()
+        + setVendor()
+        + toString()
+        - getBiggestProductId()
+    }
+  }
+  
+
+  namespace  {
+    class Read {
+        ~ scanner : Scanner
+        + changeActive()
+        + changeName()
+        + changeNutriScore()
+        + changePrice()
+        + changeVendor()
+        + readDouble()
+        + readInt()
+        + readMenuOpt()
+        - readChar()
+    }
+  }
+  
+
+  namespace  {
+    class Vendor {
+        - products : ArrayList<Product>
+        - vendorActive : boolean
+        - vendorId : int
+        - vendorName : String
+        - vendorRegDate : LocalDate
+        + Vendor()
+        + getBiggestVendorId()
+        + getProducts()
+        + getVendorActive()
+        + getVendorId()
+        + getVendorName()
+        + getVendorRegDate()
+        + setProducts()
+        + setVendorActive()
+        + setVendorId()
+        + setVendorName()
+        + toString()
+    }
+  }
+  
+
+  Client o-- Controller : controller
+  Menu o-- Controller : controller
+  Order o-- Controller : controller
+  Order o-- Client : client
+  Product o-- Controller : controller
+  Product o-- Vendor : vendor
+  Read o-- Controller : controller
+  Vendor o-- Controller : controller
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
