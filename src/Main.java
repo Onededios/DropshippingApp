@@ -197,7 +197,8 @@ public class Main {
                     } while (!option.equals("FS"));
                     break;
                 case "LA":
-                    // TODO Falta hacer el menú de listarlo todo
+                    menu.listAllObjectsMenu();
+                    editConsole.stopScreen(option);
                     break;
                 case "LV":
                     menu.listVendorMenu();
@@ -223,16 +224,16 @@ public class Main {
                     menu.listOrderByClientMenu(read.readInt());
                     editConsole.stopScreen(option);
                     break;
-                    // TODO Falta hacer el menu de editar proveedores
+                // TODO Falta hacer el menu de editar proveedores
                 case "EV":
                     break;
-                    // TODO Falta hacer el menu de editar clientes
+                // TODO Falta hacer el menu de editar clientes
                 case "EC":
                     break;
-                    // TODO Falta hacer el menu de editar productos
+                // TODO Falta hacer el menu de editar productos
                 case "EP":
                     break;
-                    // TODO Falta hacer el menu de editar Orders
+                // TODO Falta hacer el menu de editar Orders
                 case "EO":
                     break;
                 case "EX":

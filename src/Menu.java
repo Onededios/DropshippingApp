@@ -67,7 +67,7 @@ public class Menu {
     /**
      Displays a menu for creating a vendor with the given name and active status.
      The menu has options for changing the vendor's name and active status.
-     Also the user can choose to finish saving changes or exit without saving.
+     Also, the user can choose to finish saving changes or exit without saving.
      @param name the name of the vendor to be created
      @param active the active value of the vendor to be created
     */
@@ -200,8 +200,27 @@ public class Menu {
     }
 
     // ! LIST
-    // TODO Falta hacer este menú
-    public void listAllObjectsMenu() {}
+    /**
+     * Prints a formatted console menu that lists all available objects within the system, including vendors,
+     * products, clients, and orders, and their associated actions.
+     * <p>
+     * The method invokes other methods to print out the specific options related to each object.
+     *
+     * @see #listVendorMenu()
+     * @see #listProductMenu()
+     * @see #listClientMenu()
+     * @see #listOrderMenu()
+     */
+    public void listAllObjectsMenu() {
+        System.out.println("     \uD83E\uDF00\uD83E\uD83E\uDF02\uD83E\uDF03\uD83E\uDF04\uD83E\uDF05\uD83E\uDF06\uD83E\uDF07\uD83E\uDF08\uD83E\uDF09\uD83E\uDF0A\uD83E\uDF0B\uD83E\uDF0C\uD83E\uDF0D\uD83E\uDF0E\uD83E\uDF0F\uD83E\uDF10\uD83E\uDF11\uD83E\uDF12\uD83E\uDF13\uD83E\uDF14\uD83E\uDF15");
+        System.out.println("           Listing All             ");
+        System.out.println("        \uD83E\uDF16\uD83E\uDF17\uD83E\uDF18\uD83E\uDF19\uD83E\uDF1A\uD83E\uDF1B\uD83E\uDF1C\uD83E\uDF1D\uD83E\uDF1E\uD83E\uDF1F\uD83E\uDF20\uD83E\uDF21\uD83E\uDF22\uD83E\uDF23\uD83E\uDF24\uD83E\uDF25\uD83E\uDF26\uD83E\uDF27");
+        listVendorMenu();
+        listProductMenu();
+        listClientMenu();
+        listOrderMenu();
+        System.out.println("     \uD83E\uDF2E\uD83E\uDF2F\uD83E\uDF30\uD83E\uDF31\uD83E\uDF32\uD83E\uDF33\uD83E\uDF34\uD83E\uDF35\uD83E\uDF36\uD83E\uDF37\uD83E\uDF38\uD83E\uDF39\uD83E\uDF3A\uD83E\uDF3B\uD83E\uDF18\uD83E\uDF19\uD83E\uDF1A\uD83E\uDF1B\uD83E\uDF1C\uD83E\uDF1D\uD83E\uDF1E\uD83E\uDF1F\uD83E\uDF20\uD83E\uDF21\uD83E\uDF22\uD83E\uDF23");
+    }
     /**
 
      This method displays a list of vendors in a bordered format.
@@ -297,16 +316,24 @@ public class Menu {
     }
 
     // ! EDIT
-    // TODO Falta por hacer el menu de editar clientes
-    /*public void editClientMenu(int clientID) {
+    /**
+
+     Displays the Edit Client menu, allowing the user to view and modify the values of a specific client instance.
+     @param clientID the ID of the client instance to be edited
+     */
+    public void editClientMenu(int clientID) {
         System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-        System.out.println("             Edit Client            ");
+        System.out.println("            Edit Client             ");
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
         System.out.println("   ╭─────────────────────────────╮  ");
         System.out.println("            Actual Values           ");
         System.out.println("    ─────────────────────────────   ");
-        System.out.println("     Name: "+name);
-        System.out.println("     Active: "+active);
+        for (int i = 0; i < controller.getClientInstances().size(); i++) {
+            if (controller.getClientInstances().get(i).getClientID() == clientID) {
+                System.out.println("     Name: "+controller.getClientInstances().get(i).getClientName());
+                System.out.println("     Active: "+controller.getClientInstances().get(i).getClientActive());
+            }
+        }
         System.out.println("   ╰─────────────────────────────╯  ");
         System.out.println("   ╭─────────────────────────────╮  ");
         System.out.println("            Change Values           ");
@@ -318,11 +345,81 @@ public class Menu {
         System.out.println("     FS. Finish and Save            ");
         System.out.println("     EW. Exit Without Saving        ");
         System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-    }*/
-    // TODO Falta por hacer el menu de editar productos
-    public void editProductMenu() {}
-    // TODO Falta por hacer el menu de editar proveedores
-    public void editVendorMenu() {}
+    }
+    /**
+
+     Displays a menu to edit the values of a product identified by the given product ID.
+     The menu shows the current values of the product and allows the user to view available vendors,
+     change the name, price, nutriScore, and vendor assigned to the product. The user can choose to finish and save
+     the changes or exit without saving.
+     @param productID the ID of the product to edit
+     */
+    public void editProductMenu(int productID) {
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("            Create Product          ");
+        System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Actual Values           ");
+        System.out.println("    ─────────────────────────────   ");
+        for (int i = 0; i < controller.getProductInstances().size(); i++) {
+            if (controller.getProductInstances().get(i).getProductId() == productID) {
+                System.out.println("     Name: "+controller.getProductInstances().get(i).getProductName());
+                System.out.println("     Price: "+controller.getProductInstances().get(i).getProductPrice());
+                System.out.println("     NutriScore: "+controller.getProductInstances().get(i).getProductNutriScore());
+                System.out.println("     Vendor ID: "+controller.getProductInstances().get(i).getVendor().getVendorId());
+                System.out.println("     Vendor Name: "+controller.getProductInstances().get(i).getVendor().getVendorName());
+            }
+        }
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("             View Values            ");
+        System.out.println("    ─────────────────────────────   ");
+        System.out.println("     VAV. View Available Vendors    ");
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Change Values           ");
+        System.out.println("    ─────────────────────────────   ");
+        System.out.println("     CN. Change Name                ");
+        System.out.println("     CP. Change Price               ");
+        System.out.println("     CS. Change NutriScore          ");
+        System.out.println("     CV. Change Vendor Assigned     ");
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
+        System.out.println("     FS. Finish and Save            ");
+        System.out.println("     EW. Exit Without Saving        ");
+        System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+    }
+    /**
+
+     Displays the edit vendor menu, showing the current values of the vendor with the given ID
+     and the available options for changing them.
+     @param vendorID the ID of the vendor to be edited
+     */
+    public void editVendorMenu(int vendorID) {
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("            Edit Vendor             ");
+        System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Actual Values           ");
+        System.out.println("    ─────────────────────────────   ");
+        for (int i = 0; i < controller.getVendorInstances().size(); i++) {
+            if (controller.getVendorInstances().get(i).getVendorId() == vendorID) {
+                System.out.println("     Name: "+controller.getVendorInstances().get(i).getVendorName());
+                System.out.println("     Active: "+controller.getVendorInstances().get(i).getVendorActive());
+            }
+        }
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Change Values           ");
+        System.out.println("    ─────────────────────────────   ");
+        System.out.println("     CN. Change Name                ");
+        System.out.println("     CA. Change Active              ");
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
+        System.out.println("     FS. Finish and Save            ");
+        System.out.println("     EW. Exit Without Saving        ");
+        System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+    }
     // TODO Falta por hacer el menu de editar ordenes
     public void editOrderMenu() {}
 }
