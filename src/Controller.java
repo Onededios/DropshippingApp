@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+
 /**
 
  Controller class is responsible for managing instances of clients, vendors, orders and products.
@@ -106,40 +108,112 @@ public class Controller {
      */
     public ArrayList<Integer> getDefaultObjectsOrder() {return defaultObjectsOrder;}
     // * Methods
-        // ! To add instances
-        /**
-         Adds the given product to the vendor's list of products, if the vendor exists in the system.
-         If the vendor is not found, a message is printed to the console indicating that the vendor was not found.
-         @param product the product to add to the vendor's list of products
-         */
-        public void addProductToVendor(Product product) {
-            boolean found = false;
-            for (Vendor vendorInstance : vendorInstances) {
-                if (vendorInstance.getVendorId() == product.getVendor().getVendorId()) {
-                    vendorInstance.getProducts().add(product);
-                    found = true;
-                }
-            }
-            System.out.println(!found?"Product added to vendor":"Vendor not found");
-            }
-        /**
+    /**
 
-         Adds the given product to the specified order in the list of order instances.
-         If the order is found, the product is added to its list of products, and a success message is printed.
-         If the order is not found, an error message is printed.
-         @param product the product to add to the order
-         @param order the order to which the product is added
-         */
-        public void addProductToOrder(Product product, Order order) {
-            boolean found = false;
-            for (Order orderInstance : orderInstances) {
-                if (orderInstance.getOrderID() == order.getOrderID()) {
-                    orderInstance.getProducts().add(product);
-                    found = true;
+     Adds the specified quantity of a product with the given ID to the provided list of products.
+     @param id The ID of the product to be added.
+     @param products The list of products to which the product will be added.
+     @param qty The quantity of the product to be added.
+     */
+    public void addProductToList(int id, ArrayList<Product> products, int qty) {
+        if (qty > 0) {
+            // Add the specified quantity of the product to the list
+            for (Product productInstance : productInstances) {
+                if (productInstance.getProductId() == id) {
+                    for (int j = 0; j < qty; j++) {
+                        products.add(productInstance);
+                    }
                 }
             }
-            System.out.println(!found?"Product added to order":"Order not found");
+            System.out.println("Product/s added to order.");
         }
+    }
+    /**
+
+     Removes a specified quantity of a product with a given ID from the provided list of products.
+     @param id the ID of the product to be dropped
+     @param products the list of products to be modified
+     @param qty the quantity of the product to be dropped
+     */
+    public void dropProductFromList(int id, ArrayList<Product> products, int qty) {
+        if (qty > 0) {
+            boolean found;
+            int count = 0;
+            while (count < qty) {
+                found = false;
+                for (int j = 0; j < products.size(); j++) {
+                    if (products.get(j).getProductId() == id) {
+                        products.remove(j);
+                        found = true;
+                        count++;
+                        break;
+                    }
+                }
+                if (!found) {
+                    break;
+                }
+            }
+            System.out.println("Product/s dropped from order.");
+        }
+    }
+    /**
+
+     Returns a string that contains a formatted list of products ordered for a given order ID.
+     The list includes product ID, name, quantity, price per item, and total price for each unique product.
+     @param orderID the ID of the order to print the product list for
+     @return a formatted string with the list of products ordered for the given order ID
+     */
+    public String printOutProductList(int orderID) {
+        StringBuilder finalString = new StringBuilder();
+        HashSet<Integer> seenProductIDs = new HashSet<>();
+        for (Order orderInstance : orderInstances) {
+            if (orderInstance.getOrderID() == orderID) {
+                for (int j = 0; j < orderInstance.getProducts().size(); j++) {
+                    int actual = orderInstance.getProducts().get(j).getProductId();
+                    if (!seenProductIDs.contains(actual)) {
+                        seenProductIDs.add(actual);
+                        int count = 1;
+                        for (int k = j + 1; k < orderInstance.getProducts().size(); k++) {
+                            if (actual == orderInstance.getProducts().get(k).getProductId()) {
+                                count++;
+                            }
+                        }
+                        finalString.append("\n     * ").append(orderInstance.getProducts().get(j).getProductId()).append(" | ").append(orderInstance.getProducts().get(j).getProductName()).append(" | ").append(count).append(" | ").append(orderInstance.getProducts().get(j).getProductPrice()).append(" | ").append(count * orderInstance.getProducts().get(j).getProductPrice());
+                    }
+                }
+            }
+        }
+        return finalString.toString();
+    }
+    /**
+
+     Generates a string that represents a list of products along with their respective details, based on an input ArrayList.
+     @param productList the list of products to be included in the output string
+     @return a string containing the product information for each unique product ID in the input ArrayList, including the ID, name, number of occurrences, price, and total cost for that product
+     */
+    public String printOutProductList(ArrayList<Product> productList) {
+        StringBuilder finalString = new StringBuilder();
+        HashSet<Integer> seenProductIDs = new HashSet<>();
+        for (int i = 0; i < productList.size(); i++) {
+            int actual = productList.get(i).getProductId();
+            if (!seenProductIDs.contains(actual)) {
+                seenProductIDs.add(actual);
+                int count = 1;
+                for (int j = i + 1; j < productList.size(); j++) {
+                    if (actual == productList.get(j).getProductId()) { count++; }
+                }
+                finalString.append("\n     * ").append(productList.get(i).getProductId()).append(" | ").append(productList.get(i).getProductName()).append(" | ").append(count).append(" | ").append(productList.get(i).getProductPrice()).append(" | ").append(count * productList.get(i).getProductPrice());
+            }
+        }
+        float total = 0;
+        for (Product product : productList) {
+            total += product.getProductPrice();
+        }
+        finalString.append("\n     * Amount: ").append(total);
+        return finalString.toString();
+    }
+
+    // ! To add instances
         /**
 
          Creates a new product with the specified name, price, nutrition grade, and vendor, and adds it to the list of product instances.
@@ -148,7 +222,7 @@ public class Controller {
          @param nutri the nutrition grade of the product
          @param vendor the vendor of the product
          */
-        public void addProductToInstances(String name, double price, char nutri, Vendor vendor) {
+        public void addProductToInstances(String name, float price, char nutri, Vendor vendor) {
             Product product = new Product(name, price, nutri, vendor);
             productInstances.add(product);
         }
@@ -229,7 +303,7 @@ public class Controller {
                 }
             }
         }
-/**
+    /**
 
  This method initializes default instances for vendors, products, clients and orders.
  The vendors, products and clients are added to their respective instance lists.
@@ -243,54 +317,54 @@ public class Controller {
         Vendor vendor2 = new Vendor( "TecnoGlobal Group", true);
         vendorInstances.add(vendor2);
         defaultObjectsVendor.add(vendor2.getVendorId());
-        Vendor vendor3 = new Vendor( "Comunicaciones Avanzadas Ltda.", false);
+        Vendor vendor3 = new Vendor( "Comunicaciones Avanzadas Ltd.", false);
         vendorInstances.add(vendor3);
         defaultObjectsVendor.add(vendor3.getVendorId());
 
         // * Default products
-        Product p1 = new Product( "Apple", 1.99, 'A', vendor1);
+        Product p1 = new Product( "Apple", 1.99F, 'A', vendor1);
         productInstances.add(p1);
         defaultObjectsProduct.add(p1.getProductId());
-        Product p2 = new Product( "Banana", 0.99, 'B', vendor1);
+        Product p2 = new Product( "Banana", 0.99F, 'B', vendor1);
         productInstances.add(p2);
         defaultObjectsProduct.add(p2.getProductId());
-        Product p3 = new Product( "Orange", 2.99, 'C', vendor3);
+        Product p3 = new Product( "Orange", 2.99F, 'C', vendor3);
         productInstances.add(p3);
         defaultObjectsProduct.add(p3.getProductId());
-        Product p4 = new Product( "Grape", 3.99, 'D', vendor2);
+        Product p4 = new Product( "Grape", 3.99F, 'D', vendor2);
         productInstances.add(p4);
         defaultObjectsProduct.add(p4.getProductId());
-        Product p5 = new Product( "Pineapple", 4.99, 'E', vendor2);
+        Product p5 = new Product( "Pineapple", 4.99F, 'E', vendor2);
         productInstances.add(p5);
         defaultObjectsProduct.add(p5.getProductId());
-        Product p6 = new Product( "Strawberry", 5.99, 'F', vendor1);
+        Product p6 = new Product( "Strawberry", 5.99F, 'F', vendor1);
         productInstances.add(p6);
         defaultObjectsProduct.add(p6.getProductId());
-        Product p7 = new Product( "Cherry", 6.99, 'G', vendor3);
+        Product p7 = new Product( "Cherry", 6.99F, 'G', vendor3);
         productInstances.add(p7);
         defaultObjectsProduct.add(p7.getProductId());
-        Product p8 = new Product( "Mango", 7.99, 'H', vendor2);
+        Product p8 = new Product( "Mango", 7.99F, 'H', vendor2);
         productInstances.add(p8);
         defaultObjectsProduct.add(p8.getProductId());
-        Product p9 = new Product( "Pear", 8.99, 'I', vendor1);
+        Product p9 = new Product( "Pear", 8.99F, 'I', vendor1);
         productInstances.add(p9);
         defaultObjectsProduct.add(p9.getProductId());
-        Product p10 = new Product( "Peach", 9.99, 'J', vendor2);
+        Product p10 = new Product( "Peach", 9.99F, 'J', vendor2);
         productInstances.add(p10);
         defaultObjectsProduct.add(p10.getProductId());
-        Product p11 = new Product( "Kiwi", 10.99, 'K', vendor3);
+        Product p11 = new Product( "Kiwi", 10.99F, 'K', vendor3);
         productInstances.add(p11);
         defaultObjectsProduct.add(p11.getProductId());
-        Product p12 = new Product( "Lemon", 11.99, 'L', vendor1);
+        Product p12 = new Product( "Lemon", 11.99F, 'L', vendor1);
         productInstances.add(p12);
         defaultObjectsProduct.add(p12.getProductId());
-        Product p13 = new Product( "Grapefruit", 12.99, 'M', vendor1);
+        Product p13 = new Product( "Grapefruit", 12.99F, 'M', vendor1);
         productInstances.add(p13);
         defaultObjectsProduct.add(p13.getProductId());
-        Product p14 = new Product( "Pineapple", 13.99, 'N', vendor2);
+        Product p14 = new Product( "Pineapple", 13.99F, 'N', vendor2);
         productInstances.add(p14);
         defaultObjectsProduct.add(p14.getProductId());
-        Product p15 = new Product( "Strawberry", 14.99, 'O', vendor3);
+        Product p15 = new Product( "Strawberry", 14.99F, 'O', vendor3);
         productInstances.add(p15);
         defaultObjectsProduct.add(p15.getProductId());
 
@@ -312,16 +386,24 @@ public class Controller {
         products1.add(p15);
         products1.add(p12);
         products1.add(p10);
+        products1.add(p3);
+        products1.add(p3);
+
 
         ArrayList<Product> products2 = new ArrayList<>();
         products2.add(p3);
         products2.add(p15);
         products2.add(p11);
+        products2.add(p8);
+        products2.add(p8);
 
         ArrayList<Product> products3 = new ArrayList<>();
         products3.add(p5);
+        products3.add(p9);
         products3.add(p4);
         products3.add(p8);
+        products3.add(p8);
+        products3.add(p9);
         products3.add(p9);
 
         Order order1 = new Order(c1, products1);

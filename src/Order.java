@@ -5,6 +5,7 @@ import java.util.ArrayList;
  The Order class represents an order made by a client, including the order ID, date, client details,
  whether it has been paid or not, product quantity, total price and the products included in the order.
  */
+@SuppressWarnings({"ALL", "GrazieInspection"})
 public class Order {
     // * Attributes
     /**
@@ -16,7 +17,7 @@ public class Order {
 
      The date when the order was made.
      */
-    private LocalDate orderDate;
+    private final LocalDate orderDate;
     /**
 
      The client who made the order.
@@ -24,19 +25,14 @@ public class Order {
     private Client client;
     /**
 
-     Whether or not the order has been paid for.
+     Whether the order has been paid for.
      */
     private boolean orderPaid;
     /**
 
-     The total quantity of products in the order.
-     */
-    private int productQTY;
-    /**
-
      The total price of the order.
      */
-    private double totalPrice;
+    private final float totalPrice;
     /**
 
      The list of products included in the order.
@@ -46,7 +42,8 @@ public class Order {
 
      The controller used to manage this order instance.
      */
-    Controller controller = new Controller();
+    final Controller controller = new Controller();
+    // * Constructors
     /**
 
      Constructs an order object with the specified client and list of products.
@@ -58,17 +55,14 @@ public class Order {
      @param client the client who made the order
      @param products the list of products ordered
      */
-    // * Constructors
     public Order(Client client, ArrayList<Product> products) {
         this.orderID = getBiggestOrderId() + 1;
         this.orderDate = LocalDate.now();
         this.client = client;
         this.orderPaid = false;
         this.products = products;
-        this.productQTY = products.size();
         this.totalPrice = getTotalPrice();
     }
-
     // * Getters and Setters
     /**
 
@@ -160,22 +154,25 @@ public class Order {
     }
     /**
 
-     Returns the total price of all products in the order.
-     @return the total price of all products
+     Calculates the total price of all products in the list.
+     @return The total price of all products in the list.
      */
-    private double getTotalPrice() {
-        double totalPrice = 0;
-        for (int i = 0; i < products.size(); i++) {
-            totalPrice += products.get(i).getProductPrice();
+    public float getTotalPrice() {
+        float totalPrice = 0;
+        for (Product product : products) {
+            totalPrice += product.getProductPrice();
         }
         return totalPrice;
     }
     // * Methods
     /**
 
-     Returns a string representation of the Order object, including order ID, date, payment status,
-     client information, total number of products, total price and a list of products included in the order.
-     @return a string containing the order information and the list of products included in the order.
+     Returns a string representation of this order object.
+     The returned string contains the order ID, order date, payment status, client ID, client name,
+     total price, and a list of products in the order, including their ID, name, quantity, unit price,
+     and total price. The shopping list is obtained by calling the {@code printOutProductList} method
+     of the controller object associated with this order.
+     @return a string representation of this order object.
      */
     public String toString() {
         String finalString =
@@ -187,10 +184,15 @@ public class Order {
             "\n     Paid: " + orderPaid +
             "\n     Client ID: " + client.getClientID() +
             "\n     Client Name: " + client.getClientName() +
-            "\n     Total Products: "+ productQTY +
-            "\n     Total Price: " + totalPrice;
-        for (int i = 0; i < products.size(); i++) {finalString +=  "\n" + products.get(i).toString();}
-        finalString +=  "\n   ◥■■■■■■■■■■■■■■■■■■■■■■■■■■◤";
+            "\n     Total Price: " + totalPrice +
+            "\n     ***************************" +
+            "\n     *      SHOPPING LIST      *" +
+            "\n     *   ID|Name|QTY|€/U|€/T   *" +
+            "\n     *  *********************  *";
+            finalString += controller.printOutProductList(orderID);
+        finalString +=
+            "\n     ***************************"+
+            "\n   ◥■■■■■■■■■■■■■■■■■■■■■■■■■■◤";
         return finalString;
     }
 }

@@ -4,16 +4,17 @@ import java.util.Scanner;
  The Read class is used for reading user input from the console and interacting with a Controller object.
  It has a Controller object and a Scanner object as instance variables, and provides methods for reading
  different types of user input and passing them to the Controller.
+ All methods in this class must return something
  */
 public class Read {
     /**
 The Controller object used by this Read instance.
 */
-    Controller controller = new Controller();
+    final Controller controller = new Controller();
     /**
      The Scanner object used by this Read instance for reading user input from the console.
      */
-    Scanner scanner = new Scanner(System.in);
+    final Scanner scanner = new Scanner(System.in);
     /**
 
      Reads a string from standard input and returns it in uppercase.
@@ -42,26 +43,24 @@ The Controller object used by this Read instance.
     public int readInt() {
         String inp = scanner.nextLine();
         try {
-            int number = Integer.parseInt(inp);
-            return number;
+            return Integer.parseInt(inp);
         } catch (NumberFormatException e) {
-            System.out.println("The input is not a valid double.");
+            System.out.println("The input is not a valid integer.");
             return 0;
         }
     }
     /**
 
-     Reads a string from standard input and attempts to parse it as a double.
-     If the input is not a valid double, an error message is printed and 0 is returned.
-     @return the double parsed from the user input, or 0 if the input is not a valid double
+     Reads a string from standard input and attempts to parse it as a float.
+     If the input is not a valid float, an error message is printed and 0 is returned.
+     @return the float parsed from the user input, or 0 if the input is not a valid float
      */
-    public double readDouble() {
+    public float readFloat() {
         String inp = scanner.nextLine();
         try {
-            double number = Double.parseDouble(inp);
-            return number;
+            return Float.parseFloat(inp);
         } catch (NumberFormatException e) {
-            System.out.println("The input is not a valid double.");
+            System.out.println("The input is not a valid float.");
             return 0;
         }
     }
@@ -87,7 +86,7 @@ The Controller object used by this Read instance.
      @return true if the user entered "Y", false otherwise
      */
     public boolean changeActive() {
-        System.out.print("Set active? (Y/N): ");
+        System.out.print("Set active/paid? (Y/N): ");
         String opt = readMenuOpt();
         System.out.println();
         if (opt.equals("Y")) {System.out.println("Value updated."); return true;}
@@ -111,15 +110,16 @@ The Controller object used by this Read instance.
 
      Prompts the user to enter a new value for the "price" attribute and validates the input.
      If the input is negative, an error message is printed and 0 is returned.
-     Otherwise, the input is returned as a double and a success message is printed.
-     @return the new price entered by the user as a double, or 0 if the input is invalid
+     Otherwise, the input is returned as a float and a success message is printed.
+     @return the new price entered by the user as a float, or 0 if the input is invalid
      */
-    public double changePrice() {
+    public float changePrice() {
         System.out.print("Enter the new price: ");
-        double price = readDouble();
+        float price = readFloat();
         System.out.println();
         if (price < 0) {System.out.println("Error: Price must be positive."); return 0;}
-        System.out.println("Value updated."); return price;
+        System.out.println("Value updated.");
+        return price;
     }
     /**
 
@@ -139,5 +139,47 @@ The Controller object used by this Read instance.
             }
         }
         return null;
+    }
+    /**
+
+     Prompts the user to enter a client ID and searches for a matching client instance in the controller's list of client instances.
+     If a matching client instance is found, the method returns the client instance and prints "Client updated."
+     If a matching client instance is not found, the method returns null.
+     @return the updated client instance if a matching client is found, or null if no matching client is found
+     */
+    public Client changeClient() {
+        System.out.print("Enter the client ID: ");
+        int id = readInt();
+        System.out.println();
+        for (int i = 0; i < controller.getClientInstances().size(); i++) {
+            if (controller.getClientInstances().get(i).getClientID() == id) {
+                System.out.println("Client updated.");
+                return controller.getClientInstances().get(i);
+            }
+        }
+        return null;
+    }
+    /**
+
+     Reads the quantity of a given product ID from the user input.
+     @param id The ID of the product to read the quantity for.
+     @return The quantity of the given product ID read from user input.
+     csharp
+     Copy code
+     Returns 0 if the product ID is not found.
+     */
+    public int readProductQTY(int id) {
+        int qty = 0;
+        boolean found = false;
+        for (int i = 0; i < controller.getProductInstances().size(); i++) {
+            if (controller.getProductInstances().get(i).getProductId() == id) {
+                System.out.print("Enter the quantity: ");
+                qty = readInt();
+                found = true;
+                if (qty < 1) {System.out.println("Error: Entered qty must be higher than 0.");}
+            }
+        }
+        System.out.println(found?"Product found.":"Error: Product not found.");
+        return qty;
     }
 }

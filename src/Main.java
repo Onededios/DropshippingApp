@@ -1,7 +1,8 @@
+import java.util.ArrayList;
+
 // TODO Falta añadir la javadoc
-// TODO Falta hacer que en la lista salga el producto una vez, el importe por unidad, la cantidad de unidades y el precio final (preciounidad*qty)
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Menu menu = new Menu();
         Read read = new Read();
         Controller controller = new Controller();
@@ -12,17 +13,22 @@ public class Main {
             String name = "";
             boolean active = false;
             boolean added = false;
-            double price = 0.0;
+            float price = 0;
             char nutriscore = '0';
-            int vendorID = 0;
+            int id = 0;
+            int vendorId = 0;
             String vendorName = "";
             Vendor vendor = null;
+            Client client = null;
             editConsole.clearScreen();
             menu.mainMenu();
             System.out.print("Your choice: ");
             menuOpt = read.readMenuOpt();
             editConsole.clearScreen();
             String option = "";
+            boolean wantedToExit;
+            ArrayList<Product> products = new ArrayList<>();
+            int productId;
             switch (menuOpt) {
                 case "AD":
                     editConsole.clearScreen();
@@ -35,8 +41,9 @@ public class Main {
                     if (controller.getDefaultObjectsClient().size() > 0) {
                         controller.dropDefaultObjects();
                         System.out.println("Default objects dropped.");
+                    } else {
+                        System.out.println("Error: There are no default objects.");
                     }
-                    else {System.out.println("Error: There are no default objects.");}
                     editConsole.stopScreen(menuOpt);
                     break;
                 case "CV":
@@ -56,8 +63,13 @@ public class Main {
                                 break;
                             case "FS":
                                 editConsole.clearScreen();
-                                if (name.length() < 3) {System.out.println("Error: Name must be at least 3 characters long.");}
-                                else {added = true; controller.addVendorToInstances(name, active); System.out.println("Vendor added.");}
+                                if (name.length() < 3) {
+                                    System.out.println("Error: Name must be at least 3 characters long.");
+                                } else {
+                                    added = true;
+                                    controller.addVendorToInstances(name, active);
+                                    System.out.println("Vendor added.");
+                                }
                                 break;
                             case "EW":
                                 System.out.println("Wiping all changes and returning to the main menu.");
@@ -87,8 +99,13 @@ public class Main {
                                 break;
                             case "FS":
                                 editConsole.clearScreen();
-                                if (name.length() < 3) {System.out.println("Error: Name must be at least 3 characters long.");}
-                                else {added = true; controller.addClientToInstances(name, active); System.out.println("Client added.");}
+                                if (name.length() < 3) {
+                                    System.out.println("Error: Name must be at least 3 characters long.");
+                                } else {
+                                    added = true;
+                                    controller.addClientToInstances(name, active);
+                                    System.out.println("Client added.");
+                                }
                                 break;
                             case "EW":
                                 editConsole.stopScreen(option);
@@ -104,7 +121,7 @@ public class Main {
                     break;
                 case "CP":
                     do {
-                        menu.createProductMenu(name, price, nutriscore, vendorID, vendorName);
+                        menu.createProductMenu(name, price, nutriscore, id, vendorName);
                         System.out.print("Your choice: ");
                         option = read.readMenuOpt();
                         editConsole.clearScreen();
@@ -128,10 +145,11 @@ public class Main {
                                 editConsole.clearScreen();
                                 vendor = read.changeVendor();
                                 if (vendor != null) {
-                                    vendorID = vendor.getVendorId();
+                                    id = vendor.getVendorId();
                                     vendorName = vendor.getVendorName();
+                                } else {
+                                    System.out.println("Error: Vendor not found.");
                                 }
-                                else {System.out.println("Error: Vendor not found.");}
                                 read.readMenuOpt();
                                 break;
                             case "VAV":
@@ -145,14 +163,26 @@ public class Main {
                                 boolean nutriscoreEntered = false;
                                 boolean vendorIDEntered = false;
                                 editConsole.clearScreen();
-                                if (name.length() < 3) {System.out.println("Error: Name must be at least 3 characters long.");}
-                                else {nameEntered = true;}
-                                if (price == 0.0) {System.out.println("Error: Price must be higher than 0.0.");}
-                                else {priceEntered = true;}
-                                if ((int)nutriscore < 65 | (int)nutriscore > 90) {System.out.println("Error: The product must have a nutriscore");}
-                                else {nutriscoreEntered = true;}
-                                if (vendorID == 0) {System.out.println("Error: The vendor entered must be valid.");}
-                                else {vendorIDEntered = true;}
+                                if (name.length() < 3) {
+                                    System.out.println("Error: Name must be at least 3 characters long.");
+                                } else {
+                                    nameEntered = true;
+                                }
+                                if (price == 0.0) {
+                                    System.out.println("Error: Price must be higher than 0.0.");
+                                } else {
+                                    priceEntered = true;
+                                }
+                                if ((int) nutriscore < 65 | (int) nutriscore > 90) {
+                                    System.out.println("Error: The product must have a nutriscore");
+                                } else {
+                                    nutriscoreEntered = true;
+                                }
+                                if (id == 0) {
+                                    System.out.println("Error: The vendor entered must be valid.");
+                                } else {
+                                    vendorIDEntered = true;
+                                }
                                 editConsole.stopScreen(option);
                                 if (nameEntered && priceEntered && nutriscoreEntered && vendorIDEntered) {
                                     added = true;
@@ -172,20 +202,64 @@ public class Main {
                     } while (!option.equals("EW") && !added);
                     break;
                 case "CO":
-                    // TODO Falta hacer el menú de crear Orders
-                    menu.createOrderMenu();
-                    System.out.print("Your choice: ");
-                    option = read.readMenuOpt();
-                    editConsole.clearScreen();
                     do {
+                        menu.createOrderMenu(id, name, products);
+                        System.out.print("Your choice: ");
+                        option = read.readMenuOpt();
+                        editConsole.clearScreen();
                         switch (option) {
-                            case "CI":
+                            case "CC":
+                                editConsole.clearScreen();
+                                client = read.changeClient();
+                                if (client != null) {
+                                    id = client.getClientID();
+                                    name = client.getClientName();
+                                } else {
+                                    System.out.println("Error: Client not found.");
+                                }
+                                read.readMenuOpt();
                                 break;
-                            case "CN":
+                            case "VAC":
+                                editConsole.clearScreen();
+                                menu.listClientMenu();
+                                editConsole.stopScreen(option);
                                 break;
-                            case "CA":
+                            case "VAP":
+                                editConsole.clearScreen();
+                                menu.listProductMenu();
+                                editConsole.stopScreen(option);
+                                break;
+                            case "API":
+                                editConsole.clearScreen();
+                                System.out.print("Enter the product ID: ");
+                                productId = read.readInt();
+                                controller.addProductToList(productId, products, read.readProductQTY(productId));
+                                editConsole.stopScreen(option);
+                                break;
+                            case "DPI":
+                                editConsole.clearScreen();
+                                System.out.print("Enter the product ID: ");
+                                productId = read.readInt();
+                                controller.dropProductFromList(productId, products, read.readProductQTY(productId));
+                                editConsole.stopScreen(option);
                                 break;
                             case "FS":
+                                editConsole.clearScreen();
+                                boolean clientAdded = false;
+                                boolean productAdded = false;
+                                if (client != null) {clientAdded = true;}
+                                else {System.out.println("Error: There is no Client selected.");}
+                                if (products.size() > 0) {productAdded = true;}
+                                else {System.out.println("Error: There are no Products added.");}
+                                if (clientAdded && productAdded) {
+                                    controller.addOrderToInstances(client, products);
+                                    added = true;
+                                    System.out.println("Order added.");
+                                }
+                                editConsole.stopScreen(option);
+                                break;
+                            case "EW":
+                                editConsole.clearScreen();
                                 System.out.println("Wiping all changes and returning to the main menu.");
                                 editConsole.stopScreen(option);
                                 break;
@@ -194,7 +268,8 @@ public class Main {
                                 editConsole.stopScreen(option);
                                 break;
                         }
-                    } while (!option.equals("FS"));
+                    } while (!option.equals("EW") && !added);
+
                     break;
                 case "LA":
                     menu.listAllObjectsMenu();
@@ -224,17 +299,521 @@ public class Main {
                     menu.listOrderByClientMenu(read.readInt());
                     editConsole.stopScreen(option);
                     break;
-                // TODO Falta hacer el menu de editar proveedores
+                // TODO Falta comprobar si se ha editado algo, para así no tener que actualizarlo.
                 case "EV":
+                    boolean vendorSelected = false;
+                    wantedToExit = false;
+                    do {
+                        menu.selectVendorMenu(name, id);
+                        System.out.print("Your choice: ");
+                        option = read.readMenuOpt();
+                        editConsole.clearScreen();
+                        switch (option) {
+                            case "VAV":
+                                editConsole.clearScreen();
+                                menu.listVendorMenu();
+                                break;
+                            case "CS":
+                                boolean found = false;
+                                boolean notADefaultObject = true;
+                                System.out.print("\nOk, so tell me the ID to edit: ");
+                                id = read.readInt();
+                                for (int i = 0; i < controller.getVendorInstances().size(); i++) {
+                                    if (controller.getVendorInstances().get(i).getVendorId() == id) {
+                                        for (int j = 0; j < controller.getDefaultObjectsVendor().size(); j++) {
+                                            if (controller.getDefaultObjectsVendor().get(j) == id) {
+                                                notADefaultObject = false;
+                                                break;
+                                            }
+                                        }
+                                        if (notADefaultObject) {
+                                            name = controller.getVendorInstances().get(i).getVendorName();
+                                            active = controller.getVendorInstances().get(i).getVendorActive();
+                                        }
+                                        found = true;
+                                    }
+                                }
+                                if (!found) {
+                                    System.out.println("Error: Vendor not found.");
+                                } else if (!notADefaultObject) {
+                                    System.out.println("Error: You cannot edit a default object.");
+                                    id = 0;
+                                } else {
+                                    vendorSelected = true;
+                                    System.out.println("Vendor selected.");
+                                }
+                                break;
+                            case "C":
+                                if (vendorSelected) {
+                                    System.out.println("Continuing to the edit menu...");
+                                } else {
+                                    System.out.println("Error: You must select a Vendor first.");
+                                }
+                                break;
+                            case "EW":
+                                wantedToExit = true;
+                                System.out.println("Wiping all changes and returning to the main menu.");
+                                break;
+                        }
+                        editConsole.stopScreen(option);
+                        editConsole.clearScreen();
+                    } while (!option.equals("EW") && (!option.equals("C") || !vendorSelected));
+                    if (vendorSelected && !wantedToExit) {
+                        do {
+                            menu.editVendorMenu(name, active);
+                            System.out.print("Your choice: ");
+                            option = read.readMenuOpt();
+                            editConsole.clearScreen();
+                            switch (option) {
+                                case "CN":
+                                    editConsole.clearScreen();
+                                    name = read.changeName();
+                                    break;
+                                case "CA":
+                                    editConsole.clearScreen();
+                                    active = read.changeActive();
+                                    break;
+                                case "DROP":
+                                    editConsole.clearScreen();
+                                    controller.getVendorInstances().remove(id);
+                                    System.out.println("Vendor dropped.");
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "FS":
+                                    editConsole.clearScreen();
+                                    if (name.length() < 3) {
+                                        System.out.println("Error: Name must be at least 3 characters long.");
+                                    } else {
+                                        added = true;
+                                        for (int i = 0; i < controller.getVendorInstances().size(); i++) {
+                                            if (controller.getVendorInstances().get(i).getVendorId() == id) {
+                                                controller.getVendorInstances().get(i).setVendorName(name);
+                                                controller.getVendorInstances().get(i).setVendorActive(active);
+                                            }
+                                        }
+                                        System.out.println("Vendor changed.");
+                                    }
+                                    break;
+                                case "EW":
+                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    break;
+                                default:
+                                    System.out.println("Error: Invalid option");
+                                    break;
+                            }
+                            editConsole.stopScreen(option);
+                            editConsole.clearScreen();
+                        } while (!option.equals("EW") && !added);
+                    }
                     break;
-                // TODO Falta hacer el menu de editar clientes
                 case "EC":
+                    boolean clientSelected = false;
+                    wantedToExit = false;
+                    do {
+                        menu.selectClientMenu(name, id);
+                        System.out.print("Your choice: ");
+                        option = read.readMenuOpt();
+                        editConsole.clearScreen();
+                        switch (option) {
+                            case "VAC":
+                                editConsole.clearScreen();
+                                menu.listClientMenu();
+                                break;
+                            case "CS":
+                                boolean found = false;
+                                boolean notADefaultObject = true;
+                                System.out.print("\nOk, so tell me the ID to edit: ");
+                                id = read.readInt();
+                                for (int i = 0; i < controller.getClientInstances().size(); i++) {
+                                    if (controller.getClientInstances().get(i).getClientID() == id) {
+                                        for (int j = 0; j < controller.getDefaultObjectsClient().size(); j++) {
+                                            if (controller.getDefaultObjectsClient().get(j) == id) {
+                                                notADefaultObject = false;
+                                                break;
+                                            }
+                                        }
+                                        if (notADefaultObject) {
+                                            name = controller.getClientInstances().get(i).getClientName();
+                                            active = controller.getClientInstances().get(i).getClientActive();
+                                        }
+                                        found = true;
+                                    }
+                                }
+                                if (!found) {
+                                    System.out.println("Error: Client not found.");
+                                } else if (!notADefaultObject) {
+                                    System.out.println("Error: You cannot edit a default object.");
+                                    id = 0;
+                                } else {
+                                    clientSelected = true;
+                                    System.out.println("Client selected.");
+                                }
+                                break;
+                            case "C":
+                                if (clientSelected) {
+                                    System.out.println("Continuing to the edit menu...");
+                                } else {
+                                    System.out.println("Error: You must select a Client first.");
+                                }
+                                break;
+                            case "EW":
+                                wantedToExit = true;
+                                System.out.println("Wiping all changes and returning to the main menu.");
+                                break;
+                        }
+                        editConsole.stopScreen(option);
+                        editConsole.clearScreen();
+                    } while (!option.equals("EW") && (!option.equals("C") || !clientSelected));
+                    if (clientSelected && !wantedToExit) {
+                        do {
+                            menu.editClientMenu(name, active);
+                            System.out.print("Your choice: ");
+                            option = read.readMenuOpt();
+                            editConsole.clearScreen();
+                            switch (option) {
+                                case "CN":
+                                    editConsole.clearScreen();
+                                    name = read.changeName();
+                                    break;
+                                case "CA":
+                                    editConsole.clearScreen();
+                                    active = read.changeActive();
+                                    break;
+                                case "DROP":
+                                    editConsole.clearScreen();
+                                    controller.getClientInstances().remove(id);
+                                    System.out.println("Client dropped.");
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "FS":
+                                    editConsole.clearScreen();
+                                    if (name.length() < 3) {
+                                        System.out.println("Error: Name must be at least 3 characters long.");
+                                    } else {
+                                        added = true;
+                                        for (int i = 0; i < controller.getClientInstances().size(); i++) {
+                                            if (controller.getClientInstances().get(i).getClientID() == id) {
+                                                controller.getClientInstances().get(i).setClientName(name);
+                                                controller.getClientInstances().get(i).setClientActive(active);
+                                            }
+                                        }
+                                        System.out.println("Client changed.");
+                                    }
+                                    break;
+                                case "EW":
+                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    break;
+                                default:
+                                    System.out.println("Error: Invalid option");
+                                    break;
+                            }
+                            editConsole.stopScreen(option);
+                            editConsole.clearScreen();
+                        } while (!option.equals("EW") && !added);
+                    }
                     break;
-                // TODO Falta hacer el menu de editar productos
                 case "EP":
+                    boolean productSelected = false;
+                    wantedToExit = false;
+                    do {
+                        menu.selectProductMenu(name, id);
+                        System.out.print("Your choice: ");
+                        option = read.readMenuOpt();
+                        editConsole.clearScreen();
+                        switch (option) {
+                            case "VAP":
+                                editConsole.clearScreen();
+                                menu.listProductMenu();
+                                break;
+                            case "CS":
+                                boolean found = false;
+                                boolean notADefaultObject = true;
+                                System.out.print("\nOk, so tell me the ID to edit: ");
+                                id = read.readInt();
+                                for (int i = 0; i < controller.getProductInstances().size(); i++) {
+                                    if (controller.getProductInstances().get(i).getProductId() == id) {
+                                        for (int j = 0; j < controller.getDefaultObjectsProduct().size(); j++) {
+                                            if (controller.getDefaultObjectsProduct().get(j) == id) {
+                                                notADefaultObject = false;
+                                                break;
+                                            }
+                                        }
+                                        if (notADefaultObject) {
+                                            name = controller.getProductInstances().get(i).getProductName();
+                                            price = controller.getProductInstances().get(i).getProductPrice();
+                                            nutriscore = controller.getProductInstances().get(i).getProductNutriScore();
+                                            vendorId = controller.getProductInstances().get(i).getVendor().getVendorId();
+                                            vendorName = controller.getProductInstances().get(i).getVendor().getVendorName();
+                                        }
+                                        found = true;
+                                    }
+                                }
+                                if (!found) {
+                                    System.out.println("Error: Product not found.");
+                                } else if (!notADefaultObject) {
+                                    System.out.println("Error: You cannot edit a default object.");
+                                    id = 0;
+                                } else {
+                                    productSelected = true;
+                                    System.out.println("Product selected.");
+                                }
+                                break;
+                            case "C":
+                                if (productSelected) {
+                                    System.out.println("Continuing to the edit menu...");
+                                } else {
+                                    System.out.println("Error: You must select a Product first.");
+                                }
+                                break;
+                            case "EW":
+                                wantedToExit = true;
+                                System.out.println("Wiping all changes and returning to the main menu.");
+                                break;
+                        }
+                        editConsole.stopScreen(option);
+                        editConsole.clearScreen();
+                    } while (!option.equals("EW") && (!option.equals("C") || !productSelected));
+                    if (productSelected && !wantedToExit) {
+                        do {
+                            menu.editProductMenu(name, price, nutriscore, vendorId, vendorName);
+                            System.out.print("Your choice: ");
+                            option = read.readMenuOpt();
+                            editConsole.clearScreen();
+                            switch (option) {
+                                case "CN":
+                                    editConsole.clearScreen();
+                                    name = read.changeName();
+                                    read.readMenuOpt();
+                                    break;
+                                case "CP":
+                                    editConsole.clearScreen();
+                                    price = read.changePrice();
+                                    read.readMenuOpt();
+                                    break;
+                                case "CS":
+                                    editConsole.clearScreen();
+                                    nutriscore = read.changeNutriScore();
+                                    read.readMenuOpt();
+                                    break;
+                                case "CV":
+                                    editConsole.clearScreen();
+                                    vendor = read.changeVendor();
+                                    if (vendor != null) {
+                                        id = vendor.getVendorId();
+                                        vendorName = vendor.getVendorName();
+                                    } else {
+                                        System.out.println("Error: Vendor not found.");
+                                    }
+                                    read.readMenuOpt();
+                                    break;
+                                case "VAV":
+                                    editConsole.clearScreen();
+                                    menu.listVendorMenu();
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "FS":
+                                    boolean nameEntered = false;
+                                    boolean priceEntered = false;
+                                    boolean nutriscoreEntered = false;
+                                    boolean vendorIDEntered = false;
+                                    editConsole.clearScreen();
+                                    if (name.length() < 3) {
+                                        System.out.println("Error: Name must be at least 3 characters long.");
+                                    } else {
+                                        nameEntered = true;
+                                    }
+                                    if (price == 0.0) {
+                                        System.out.println("Error: Price must be higher than 0.0.");
+                                    } else {
+                                        priceEntered = true;
+                                    }
+                                    if ((int) nutriscore < 65 | (int) nutriscore > 90) {
+                                        System.out.println("Error: The product must have a nutriscore");
+                                    } else {
+                                        nutriscoreEntered = true;
+                                    }
+                                    if (id == 0) {
+                                        System.out.println("Error: The vendor entered must be valid.");
+                                    } else {
+                                        vendorIDEntered = true;
+                                    }
+                                    editConsole.stopScreen(option);
+                                    if (nameEntered && priceEntered && nutriscoreEntered && vendorIDEntered) {
+                                        added = true;
+                                        for (int i = 0; i < controller.getProductInstances().size(); i++) {
+                                            if (controller.getProductInstances().get(i).getProductId() == id) {
+                                                controller.getProductInstances().get(i).setProductName(name);
+                                                controller.getProductInstances().get(i).setProductPrice(price);
+                                                controller.getProductInstances().get(i).setProductNutriScore(nutriscore);
+                                                for (int j = 0; j < controller.getVendorInstances().size(); j++) {
+                                                    if (controller.getVendorInstances().get(j).getVendorId() == vendorId) {
+                                                        controller.getProductInstances().get(i).setVendor(controller.getVendorInstances().get(j));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        System.out.println("Product changed.");
+                                    }
+                                    break;
+                                case "EW":
+                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    break;
+                                default:
+                                    System.out.println("Error: Invalid option");
+                                    break;
+                            }
+                            editConsole.stopScreen(option);
+                            editConsole.clearScreen();
+                        } while (!option.equals("EW") && !added);
+                    }
                     break;
-                // TODO Falta hacer el menu de editar Orders
                 case "EO":
+                    boolean orderSelected = false;
+                    wantedToExit = false;
+                    int index = 0;
+                    do {
+                        /*
+                            ! Remember that in this case:
+                            !   active: is the same as paid, just to reutilice attributes
+                            !   vendorID: is an attribute of client, just to reutilice attributes
+                            !   vendorName: is an attribute of client, just to reutilice attributes
+                         */
+                        menu.selectOrderMenu(id, active, vendorId, vendorName, price);
+                        System.out.print("Your choice: ");
+                        option = read.readMenuOpt();
+                        editConsole.clearScreen();
+                        switch (option) {
+                            case "VAO":
+                                editConsole.clearScreen();
+                                menu.listOrderMenu();
+                                break;
+                            case "CS":
+                                boolean found = false;
+                                boolean notADefaultObject = true;
+                                System.out.print("\nOk, so tell me the ID to edit: ");
+                                id = read.readInt();
+                                for (int i = 0; i < controller.getOrderInstances().size(); i++) {
+                                    if (controller.getOrderInstances().get(i).getOrderID() == id) {
+                                        index = i;
+                                        for (int j = 0; j < controller.getDefaultObjectsOrder().size(); j++) {
+                                            if (controller.getDefaultObjectsOrder().get(j) == id) {
+                                                notADefaultObject = false;
+                                                break;
+                                            }
+                                        }
+                                        if (notADefaultObject) {
+                                            id = controller.getOrderInstances().get(i).getOrderID();
+                                            vendorId = controller.getOrderInstances().get(i).getClient().getClientID();
+                                            vendorName = controller.getOrderInstances().get(i).getClient().getClientName();
+                                            price = controller.getOrderInstances().get(i).getTotalPrice();
+                                            active = controller.getOrderInstances().get(i).getOrderPaid();
+                                        }
+                                        found = true;
+                                    }
+                                }
+                                if (!found) {
+                                    System.out.println("Error: Order not found.");
+                                } else if (!notADefaultObject) {
+                                    System.out.println("Error: You cannot edit a default object.");
+                                    id = 0;
+                                } else {
+                                    orderSelected = true;
+                                    System.out.println("Order selected.");
+                                }
+                                break;
+                            case "C":
+                                if (orderSelected) {
+                                    System.out.println("Continuing to the edit menu...");
+                                } else {
+                                    System.out.println("Error: You must select an Order first.");
+                                }
+                                break;
+                            case "EW":
+                                wantedToExit = true;
+                                System.out.println("Wiping all changes and returning to the main menu.");
+                                break;
+                        }
+                        editConsole.stopScreen(option);
+                        editConsole.clearScreen();
+                    } while (!option.equals("EW") && (!option.equals("C") || !orderSelected));
+
+                    products = controller.getOrderInstances().get(index).getProducts();
+                    client = controller.getOrderInstances().get(index).getClient();
+                    if (orderSelected && !wantedToExit) {
+                        do {
+                            menu.editOrderMenu(vendorId, vendorName, active, products);
+                            System.out.print("Your choice: ");
+                            option = read.readMenuOpt();
+                            editConsole.clearScreen();
+                            switch (option) {
+                                case "CC":
+                                    editConsole.clearScreen();
+                                    client = read.changeClient();
+                                    if (client != null) {
+                                        vendorId = client.getClientID();
+                                        vendorName = client.getClientName();
+                                    } else {
+                                        System.out.println("Error: Client not found.");
+                                    }
+                                    read.readMenuOpt();
+                                    break;
+                                case "CP":
+                                    editConsole.clearScreen();
+                                    active = read.changeActive();
+                                    read.readMenuOpt();
+                                    break;
+                                case "VAC":
+                                    editConsole.clearScreen();
+                                    menu.listClientMenu();
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "VAP":
+                                    editConsole.clearScreen();
+                                    menu.listProductMenu();
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "API":
+                                    editConsole.clearScreen();
+                                    System.out.print("Enter the product ID: ");
+                                    productId = read.readInt();
+                                    controller.addProductToList(productId, products, read.readProductQTY(productId));
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "DPI":
+                                    editConsole.clearScreen();
+                                    System.out.print("Enter the product ID: ");
+                                    productId = read.readInt();
+                                    controller.dropProductFromList(productId, products, read.readProductQTY(productId));
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "FS":
+                                    editConsole.clearScreen();
+                                    boolean clientAdded = false;
+                                    boolean productAdded = false;
+                                    if (client != null) {clientAdded = true;}
+                                    else {System.out.println("Error: There is no Client selected.");}
+                                    if (products.size() > 0) {productAdded = true;}
+                                    else {System.out.println("Error: There are no Products added.");}
+                                    if (clientAdded && productAdded) {
+                                        controller.getOrderInstances().get(id).setClient(client);
+                                        controller.getOrderInstances().get(id).setOrderPaid(active);
+                                        controller.getOrderInstances().get(id).setProducts(products);
+                                        added = true;
+                                        System.out.println("Order changed.");
+                                    }
+                                    editConsole.stopScreen(option);
+                                    break;
+                                case "EW":
+                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    break;
+                                default:
+                                    System.out.println("Error: Invalid option");
+                                    break;
+                            }
+                            editConsole.stopScreen(option);
+                            editConsole.clearScreen();
+                        } while (!option.equals("EW") && !added);
+                    }
                     break;
                 case "EX":
                     editConsole.clearScreen();

@@ -3,6 +3,7 @@
  This class represents a Product object with various attributes, a constructor to initialize them and various methods.
  */
 public class Product {
+    // * Attributes
     /**
 
      The ID of the product.
@@ -17,10 +18,14 @@ public class Product {
 
      The price of the product.
      */
-    private double productPrice;
+    private float productPrice;
     /**
-
-     The Nutri-Score of the product.
+     * The Nutri-Score of the product.
+     * <p>
+     * This field is a single character representing the Nutri-Score of the product, which is a
+     * rating system used in several countries to evaluate the nutritional quality of food products.
+     * The Nutri-Score ranges from A (healthiest) to Z (least healthy). The value of this field should
+     * be one of the characters from 'A' to 'Z'.
      */
     private char productNutriScore;
     /**
@@ -32,7 +37,7 @@ public class Product {
 
      A controller object used to interact with the product.
      */
-    Controller controller = new Controller();
+    final Controller controller = new Controller();
     /**
 
      Constructs a new Product object with the given name, price, Nutri-Score, and vendor.
@@ -41,14 +46,14 @@ public class Product {
      @param productNutriScore the Nutri-Score of the product
      @param vendor the vendor of the product
      */
-    public Product(String productName, double productPrice, char productNutriScore, Vendor vendor) {
+    public Product(String productName, float productPrice, char productNutriScore, Vendor vendor) {
         this.productId = getBiggestProductId() + 1;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productNutriScore = productNutriScore;
+        int productQuantity = 0;
         this.vendor = vendor;
     }
-
     // * Getters & setters
     /**
 
@@ -87,7 +92,7 @@ public class Product {
      Returns the price of the product.
      @return the price of the product
      */
-    public double getProductPrice() {
+    public float getProductPrice() {
         return productPrice;
     }
     /**
@@ -95,7 +100,7 @@ public class Product {
      Sets the price of the product to the specified value.
      @param productPrice the new price of the product
      */
-    public void setProductPrice(double productPrice) {
+    public void setProductPrice(float productPrice) {
         this.productPrice = productPrice;
     }
     /**
@@ -146,7 +151,6 @@ public class Product {
         }
         return maxVal;
     }
-
     // * Methods
     /**
 
