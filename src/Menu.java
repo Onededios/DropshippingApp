@@ -398,9 +398,9 @@ public class Menu {
     }
     /**
 
-     This method displays the select vendor menu with the given name and id, allowing the user to view and change vendor information.
-     @param name the name of the vendor to be displayed
-     @param id the id of the vendor to be displayed
+     Displays a vendor menu with options to edit the selected vendor's values, view available vendors, drop the selected vendor, or change the selected vendor's values.
+     @param name the name of the selected vendor
+     @param id the ID of the selected vendor
      */
     public void selectVendorMenu(String name, int id) {
         System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
@@ -416,6 +416,11 @@ public class Menu {
         System.out.println("             View Values            ");
         System.out.println("    ─────────────────────────────   ");
         System.out.println("     VAV. View Available Vendors    ");
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Drop Object             ");
+        System.out.println("    ─────────────────────────────   ");
+        System.out.println("     DROP. Drop Vendor              ");
         System.out.println("   ╰─────────────────────────────╯  ");
         System.out.println("   ╭─────────────────────────────╮  ");
         System.out.println("            Change Values           ");
@@ -584,7 +589,7 @@ public class Menu {
      */
     public void editOrderMenu(int id, String name, boolean paid, ArrayList<Product> products) {
         System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-        System.out.println("            Edit Order            ");
+        System.out.println("            Edit Order              ");
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
         System.out.println("   ╭─────────────────────────────╮  ");
         System.out.println("            Actual Values           ");
@@ -598,6 +603,11 @@ public class Menu {
         System.out.println("    ─────────────────────────────   ");
         System.out.println("     CC. Change Client              ");
         System.out.println("     CP. Change Paid                ");
+        System.out.println("   ╰─────────────────────────────╯  ");
+        System.out.println("   ╭─────────────────────────────╮  ");
+        System.out.println("            Drop Object             ");
+        System.out.println("    ─────────────────────────────   ");
+        System.out.println("     DROP. Drop Order               ");
         System.out.println("   ╰─────────────────────────────╯  ");
         System.out.println("   ╭─────────────────────────────╮  ");
         System.out.println("             View Values            ");

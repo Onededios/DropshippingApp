@@ -8,15 +8,16 @@ public class Main {
         Controller controller = new Controller();
         EditConsole editConsole = new EditConsole();
         String menuOpt;
-
         do {
             String name = "";
             boolean active = false;
             boolean added = false;
+            boolean edited = false;
             float price = 0;
             char nutriscore = '0';
             int id = 0;
             int vendorId = 0;
+            int index = 0;
             String vendorName = "";
             Vendor vendor = null;
             Client client = null;
@@ -299,7 +300,6 @@ public class Main {
                     menu.listOrderByClientMenu(read.readInt());
                     editConsole.stopScreen(option);
                     break;
-                // TODO Falta comprobar si se ha editado algo, para así no tener que actualizarlo.
                 case "EV":
                     boolean vendorSelected = false;
                     wantedToExit = false;
@@ -329,6 +329,7 @@ public class Main {
                                         if (notADefaultObject) {
                                             name = controller.getVendorInstances().get(i).getVendorName();
                                             active = controller.getVendorInstances().get(i).getVendorActive();
+                                            index = i;
                                         }
                                         found = true;
                                     }
@@ -368,31 +369,36 @@ public class Main {
                                 case "CN":
                                     editConsole.clearScreen();
                                     name = read.changeName();
+                                    edited = true;
                                     break;
                                 case "CA":
                                     editConsole.clearScreen();
                                     active = read.changeActive();
+                                    edited = true;
                                     break;
                                 case "DROP":
                                     editConsole.clearScreen();
-                                    controller.getVendorInstances().remove(id);
+                                    controller.getVendorInstances().remove(index);
                                     System.out.println("Vendor dropped.");
-                                    editConsole.stopScreen(option);
+                                    added = true;
                                     break;
                                 case "FS":
                                     editConsole.clearScreen();
-                                    if (name.length() < 3) {
-                                        System.out.println("Error: Name must be at least 3 characters long.");
-                                    } else {
-                                        added = true;
-                                        for (int i = 0; i < controller.getVendorInstances().size(); i++) {
-                                            if (controller.getVendorInstances().get(i).getVendorId() == id) {
-                                                controller.getVendorInstances().get(i).setVendorName(name);
-                                                controller.getVendorInstances().get(i).setVendorActive(active);
+                                    if (edited) {
+                                        if (name.length() < 3) {
+                                            System.out.println("Error: Name must be at least 3 characters long.");
+                                        } else {
+                                            added = true;
+                                            for (int i = 0; i < controller.getVendorInstances().size(); i++) {
+                                                if (controller.getVendorInstances().get(i).getVendorId() == id) {
+                                                    controller.getVendorInstances().get(i).setVendorName(name);
+                                                    controller.getVendorInstances().get(i).setVendorActive(active);
+                                                }
                                             }
+                                            System.out.println("Vendor changed.");
                                         }
-                                        System.out.println("Vendor changed.");
                                     }
+                                    else {System.out.println("Error: You must change a value or just go 'EW'.");}
                                     break;
                                 case "EW":
                                     System.out.println("Wiping all changes and returning to the main menu.");
@@ -435,6 +441,7 @@ public class Main {
                                         if (notADefaultObject) {
                                             name = controller.getClientInstances().get(i).getClientName();
                                             active = controller.getClientInstances().get(i).getClientActive();
+                                            index = i;
                                         }
                                         found = true;
                                     }
@@ -474,31 +481,36 @@ public class Main {
                                 case "CN":
                                     editConsole.clearScreen();
                                     name = read.changeName();
+                                    edited = true;
                                     break;
                                 case "CA":
                                     editConsole.clearScreen();
                                     active = read.changeActive();
+                                    edited = true;
                                     break;
                                 case "DROP":
                                     editConsole.clearScreen();
-                                    controller.getClientInstances().remove(id);
+                                    controller.getClientInstances().remove(index);
                                     System.out.println("Client dropped.");
-                                    editConsole.stopScreen(option);
+                                    added = true;
                                     break;
                                 case "FS":
                                     editConsole.clearScreen();
-                                    if (name.length() < 3) {
-                                        System.out.println("Error: Name must be at least 3 characters long.");
-                                    } else {
-                                        added = true;
-                                        for (int i = 0; i < controller.getClientInstances().size(); i++) {
-                                            if (controller.getClientInstances().get(i).getClientID() == id) {
-                                                controller.getClientInstances().get(i).setClientName(name);
-                                                controller.getClientInstances().get(i).setClientActive(active);
+                                    if (edited) {
+                                        if (name.length() < 3) {
+                                            System.out.println("Error: Name must be at least 3 characters long.");
+                                        } else {
+                                            added = true;
+                                            for (int i = 0; i < controller.getClientInstances().size(); i++) {
+                                                if (controller.getClientInstances().get(i).getClientID() == id) {
+                                                    controller.getClientInstances().get(i).setClientName(name);
+                                                    controller.getClientInstances().get(i).setClientActive(active);
+                                                }
                                             }
+                                            System.out.println("Client changed.");
                                         }
-                                        System.out.println("Client changed.");
                                     }
+                                    else {System.out.println("Error: You must change a value or just go 'EW'.");}
                                     break;
                                 case "EW":
                                     System.out.println("Wiping all changes and returning to the main menu.");
@@ -544,7 +556,7 @@ public class Main {
                                             nutriscore = controller.getProductInstances().get(i).getProductNutriScore();
                                             vendorId = controller.getProductInstances().get(i).getVendor().getVendorId();
                                             vendorName = controller.getProductInstances().get(i).getVendor().getVendorName();
-                                        }
+                                            index = i;}
                                         found = true;
                                     }
                                 }
@@ -584,16 +596,19 @@ public class Main {
                                     editConsole.clearScreen();
                                     name = read.changeName();
                                     read.readMenuOpt();
+                                    edited = true;
                                     break;
                                 case "CP":
                                     editConsole.clearScreen();
                                     price = read.changePrice();
                                     read.readMenuOpt();
+                                    edited = true;
                                     break;
                                 case "CS":
                                     editConsole.clearScreen();
                                     nutriscore = read.changeNutriScore();
                                     read.readMenuOpt();
+                                    edited = true;
                                     break;
                                 case "CV":
                                     editConsole.clearScreen();
@@ -601,10 +616,17 @@ public class Main {
                                     if (vendor != null) {
                                         id = vendor.getVendorId();
                                         vendorName = vendor.getVendorName();
+                                        edited = true;
                                     } else {
                                         System.out.println("Error: Vendor not found.");
                                     }
                                     read.readMenuOpt();
+                                    break;
+                                case "DROP":
+                                    editConsole.clearScreen();
+                                    controller.getProductInstances().remove(index);
+                                    System.out.println("Product dropped.");
+                                    added = true;
                                     break;
                                 case "VAV":
                                     editConsole.clearScreen();
@@ -612,48 +634,50 @@ public class Main {
                                     editConsole.stopScreen(option);
                                     break;
                                 case "FS":
-                                    boolean nameEntered = false;
-                                    boolean priceEntered = false;
-                                    boolean nutriscoreEntered = false;
-                                    boolean vendorIDEntered = false;
-                                    editConsole.clearScreen();
-                                    if (name.length() < 3) {
-                                        System.out.println("Error: Name must be at least 3 characters long.");
-                                    } else {
-                                        nameEntered = true;
-                                    }
-                                    if (price == 0.0) {
-                                        System.out.println("Error: Price must be higher than 0.0.");
-                                    } else {
-                                        priceEntered = true;
-                                    }
-                                    if ((int) nutriscore < 65 | (int) nutriscore > 90) {
-                                        System.out.println("Error: The product must have a nutriscore");
-                                    } else {
-                                        nutriscoreEntered = true;
-                                    }
-                                    if (id == 0) {
-                                        System.out.println("Error: The vendor entered must be valid.");
-                                    } else {
-                                        vendorIDEntered = true;
-                                    }
-                                    editConsole.stopScreen(option);
-                                    if (nameEntered && priceEntered && nutriscoreEntered && vendorIDEntered) {
-                                        added = true;
-                                        for (int i = 0; i < controller.getProductInstances().size(); i++) {
-                                            if (controller.getProductInstances().get(i).getProductId() == id) {
-                                                controller.getProductInstances().get(i).setProductName(name);
-                                                controller.getProductInstances().get(i).setProductPrice(price);
-                                                controller.getProductInstances().get(i).setProductNutriScore(nutriscore);
-                                                for (int j = 0; j < controller.getVendorInstances().size(); j++) {
-                                                    if (controller.getVendorInstances().get(j).getVendorId() == vendorId) {
-                                                        controller.getProductInstances().get(i).setVendor(controller.getVendorInstances().get(j));
+                                    if (edited) {
+                                        boolean nameEntered = false;
+                                        boolean priceEntered = false;
+                                        boolean nutriscoreEntered = false;
+                                        boolean vendorIDEntered = false;
+                                        editConsole.clearScreen();
+                                        if (name.length() < 3) {
+                                            System.out.println("Error: Name must be at least 3 characters long.");
+                                        } else {
+                                            nameEntered = true;
+                                        }
+                                        if (price == 0.0) {
+                                            System.out.println("Error: Price must be higher than 0.0.");
+                                        } else {
+                                            priceEntered = true;
+                                        }
+                                        if ((int) nutriscore < 65 | (int) nutriscore > 90) {
+                                            System.out.println("Error: The product must have a nutriscore");
+                                        } else {
+                                            nutriscoreEntered = true;
+                                        }
+                                        if (id == 0) {
+                                            System.out.println("Error: The vendor entered must be valid.");
+                                        } else {
+                                            vendorIDEntered = true;
+                                        }
+                                        if (nameEntered && priceEntered && nutriscoreEntered && vendorIDEntered) {
+                                            added = true;
+                                            for (int i = 0; i < controller.getProductInstances().size(); i++) {
+                                                if (controller.getProductInstances().get(i).getProductId() == id) {
+                                                    controller.getProductInstances().get(i).setProductName(name);
+                                                    controller.getProductInstances().get(i).setProductPrice(price);
+                                                    controller.getProductInstances().get(i).setProductNutriScore(nutriscore);
+                                                    for (int j = 0; j < controller.getVendorInstances().size(); j++) {
+                                                        if (controller.getVendorInstances().get(j).getVendorId() == vendorId) {
+                                                            controller.getProductInstances().get(i).setVendor(controller.getVendorInstances().get(j));
+                                                        }
                                                     }
                                                 }
                                             }
+                                            System.out.println("Product changed.");
                                         }
-                                        System.out.println("Product changed.");
                                     }
+                                    else {System.out.println("Error: You must change a value or just go 'EW'.");}
                                     break;
                                 case "EW":
                                     System.out.println("Wiping all changes and returning to the main menu.");
@@ -670,7 +694,6 @@ public class Main {
                 case "EO":
                     boolean orderSelected = false;
                     wantedToExit = false;
-                    int index = 0;
                     do {
                         /*
                             ! Remember that in this case:
@@ -736,7 +759,6 @@ public class Main {
                         editConsole.stopScreen(option);
                         editConsole.clearScreen();
                     } while (!option.equals("EW") && (!option.equals("C") || !orderSelected));
-
                     products = controller.getOrderInstances().get(index).getProducts();
                     client = controller.getOrderInstances().get(index).getClient();
                     if (orderSelected && !wantedToExit) {
@@ -756,11 +778,19 @@ public class Main {
                                         System.out.println("Error: Client not found.");
                                     }
                                     read.readMenuOpt();
+                                    edited = true;
                                     break;
                                 case "CP":
                                     editConsole.clearScreen();
                                     active = read.changeActive();
                                     read.readMenuOpt();
+                                    edited = true;
+                                    break;
+                                case "DROP":
+                                    editConsole.clearScreen();
+                                    controller.getOrderInstances().remove(index);
+                                    System.out.println("Order dropped.");
+                                    added = true;
                                     break;
                                 case "VAC":
                                     editConsole.clearScreen();
@@ -787,21 +817,29 @@ public class Main {
                                     editConsole.stopScreen(option);
                                     break;
                                 case "FS":
-                                    editConsole.clearScreen();
-                                    boolean clientAdded = false;
-                                    boolean productAdded = false;
-                                    if (client != null) {clientAdded = true;}
-                                    else {System.out.println("Error: There is no Client selected.");}
-                                    if (products.size() > 0) {productAdded = true;}
-                                    else {System.out.println("Error: There are no Products added.");}
-                                    if (clientAdded && productAdded) {
-                                        controller.getOrderInstances().get(id).setClient(client);
-                                        controller.getOrderInstances().get(id).setOrderPaid(active);
-                                        controller.getOrderInstances().get(id).setProducts(products);
-                                        added = true;
-                                        System.out.println("Order changed.");
+                                    if (edited) {
+                                        editConsole.clearScreen();
+                                        boolean clientAdded = false;
+                                        boolean productAdded = false;
+                                        if (client != null) {
+                                            clientAdded = true;
+                                        } else {
+                                            System.out.println("Error: There is no Client selected.");
+                                        }
+                                        if (products.size() > 0) {
+                                            productAdded = true;
+                                        } else {
+                                            System.out.println("Error: There are no Products added.");
+                                        }
+                                        if (clientAdded && productAdded) {
+                                            controller.getOrderInstances().get(id).setClient(client);
+                                            controller.getOrderInstances().get(id).setOrderPaid(active);
+                                            controller.getOrderInstances().get(id).setProducts(products);
+                                            added = true;
+                                            System.out.println("Order changed.");
+                                        }
                                     }
-                                    editConsole.stopScreen(option);
+                                    else {System.out.println("Error: You must change a value or just go 'EW'.");}
                                     break;
                                 case "EW":
                                     System.out.println("Wiping all changes and returning to the main menu.");
