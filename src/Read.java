@@ -31,7 +31,7 @@ The Controller object used by this Read instance.
      */
     private char readChar() {
         String opt = scanner.nextLine().toUpperCase();
-        if (opt.length() > 1) {System.out.println("Error: A char is just one character length."); return 0;}
+        if (opt.length() > 1) {System.out.println(EditConsole.RED_BRIGHT+"Error: A char is just one character length."); return 0;}
         return opt.charAt(0);
     }
     /**
@@ -45,7 +45,7 @@ The Controller object used by this Read instance.
         try {
             return Integer.parseInt(inp);
         } catch (NumberFormatException e) {
-            System.out.println("The input is not a valid integer.");
+            System.out.println(EditConsole.RED_BRIGHT+"Error: The input is not a valid integer."+EditConsole.RESET);
             return 0;
         }
     }
@@ -60,7 +60,7 @@ The Controller object used by this Read instance.
         try {
             return Float.parseFloat(inp);
         } catch (NumberFormatException e) {
-            System.out.println("The input is not a valid float.");
+            System.out.println(EditConsole.RED_BRIGHT+"Error: The input is not a valid float."+EditConsole.RESET);
             return 0;
         }
     }
@@ -75,8 +75,8 @@ The Controller object used by this Read instance.
         System.out.print("Enter the new name: ");
         String opt = readMenuOpt();
         System.out.println();
-        if (opt.length() < 3) {System.out.println("Error: Name must be at least 3 characters long."); return "";}
-        System.out.println("Value updated."); return opt;
+        if (opt.length() < 3) {System.out.println(EditConsole.RED_BRIGHT+"Error: Name must be at least 3 characters long."); return "";}
+        System.out.println(EditConsole.GREEN_BRIGHT+"Value updated."+EditConsole.RESET); return opt;
     }
     /**
 
@@ -89,8 +89,8 @@ The Controller object used by this Read instance.
         System.out.print("Set active/paid? (Y/N): ");
         String opt = readMenuOpt();
         System.out.println();
-        if (opt.equals("Y")) {System.out.println("Value updated."); return true;}
-        System.out.println("Applying false for default value."); return false;
+        if (opt.equals("Y")) {System.out.println(EditConsole.GREEN_BRIGHT+"Value updated."+EditConsole.RESET); return true;}
+        System.out.println(EditConsole.YELLOW_BRIGHT+"Applying false for default value."+EditConsole.RESET); return false;
     }
     /**
 
@@ -103,8 +103,8 @@ The Controller object used by this Read instance.
         System.out.print("Enter the new nutri score: ");
         char nutriscore = readChar();
         System.out.println();
-        if ((int)nutriscore < 65 | (int)nutriscore > 90) {System.out.println("Error: Nutriscore must be between A-Z."); return 0;}
-        System.out.println("Value updated."); return nutriscore;
+        if ((int)nutriscore < 65 | (int)nutriscore > 90) {System.out.println(EditConsole.RED_BRIGHT+"Error: Nutriscore must be between A-Z."+EditConsole.RESET); return 0;}
+        System.out.println(EditConsole.GREEN_BRIGHT+"Value updated."+EditConsole.RESET); return nutriscore;
     }
     /**
 
@@ -117,8 +117,8 @@ The Controller object used by this Read instance.
         System.out.print("Enter the new price: ");
         float price = readFloat();
         System.out.println();
-        if (price < 0) {System.out.println("Error: Price must be positive."); return 0;}
-        System.out.println("Value updated.");
+        if (price < 0) {System.out.println(EditConsole.RED_BRIGHT+"Error: Price must be positive."+EditConsole.RESET); return 0;}
+        System.out.println(EditConsole.GREEN_BRIGHT+"Value updated."+EditConsole.RESET);
         return price;
     }
     /**
@@ -134,7 +134,7 @@ The Controller object used by this Read instance.
         System.out.println();
         for (int i = 0; i < controller.getVendorInstances().size(); i++) {
             if (controller.getVendorInstances().get(i).getVendorId() == id) {
-                System.out.println("Vendor updated.");
+                System.out.println(EditConsole.GREEN_BRIGHT+"Vendor updated."+EditConsole.RESET);
                 return controller.getVendorInstances().get(i);
             }
         }
@@ -153,7 +153,7 @@ The Controller object used by this Read instance.
         System.out.println();
         for (int i = 0; i < controller.getClientInstances().size(); i++) {
             if (controller.getClientInstances().get(i).getClientID() == id) {
-                System.out.println("Client updated.");
+                System.out.println(EditConsole.GREEN_BRIGHT+"Client updated."+EditConsole.RESET);
                 return controller.getClientInstances().get(i);
             }
         }
@@ -176,10 +176,10 @@ The Controller object used by this Read instance.
                 System.out.print("Enter the quantity: ");
                 qty = readInt();
                 found = true;
-                if (qty < 1) {System.out.println("Error: Entered qty must be higher than 0.");}
+                if (qty < 1) {System.out.println(EditConsole.RED_BRIGHT+"Error: Entered qty must be higher than 0."+EditConsole.RESET);}
             }
         }
-        System.out.println(found?"Product found.":"Error: Product not found.");
+        System.out.println(found?EditConsole.GREEN_BRIGHT+"Product found."+EditConsole.RESET:EditConsole.RED_BRIGHT+"Error: Product not found."+EditConsole.RESET);
         return qty;
     }
 }
