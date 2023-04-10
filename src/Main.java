@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 /**
- * This class is the main class of the Dropshipping application.
+ * This class is the main class of the Drop-shipping application.
  * It contains the main method that runs the application.
  * @author John Smith
  * @version 1.0
  */
 public class Main {
     /**
-     * The main method of the Dropshipping application.
+     * The main method of the Drop-shipping application.
      * It initializes the application and runs the menu loop until the user quits.
      *
      * @param args The command line arguments passed to the application.
@@ -19,10 +19,6 @@ public class Main {
         EditConsole editConsole = new EditConsole();
         String menuOpt;
         do {
-            /**
-             * Those are the variables required to run the application.
-             * There are only false/null/0 values, required to change 'em later.
-             */
             String name = "";
             boolean active = false;
             boolean added = false;
@@ -44,35 +40,23 @@ public class Main {
             boolean wantedToExit;
             ArrayList<Product> products = new ArrayList<>();
             int productId;
-            /**
-             * Here starts the main menu switch, which needs the param. 'menuOpt' to work with the switch.
-             */
             switch (menuOpt) {
-                /**
-                 * This is the option to add the default objects.
-                 */
                 case "AD":
                     editConsole.clearScreen();
                     controller.addDefaultObjects();
-                    System.out.println("Default objects added.");
+                    System.out.println(EditConsole.GREEN_BRIGHT+"Default objects added."+EditConsole.RESET);
                     editConsole.stopScreen(menuOpt);
                     break;
-                /**
-                 * This is the option to delete the default objects.
-                 */
                 case "DD":
                     editConsole.clearScreen();
                     if (controller.getDefaultObjectsClient().size() > 0) {
                         controller.dropDefaultObjects();
-                        System.out.println("Default objects dropped.");
+                        System.out.println(EditConsole.GREEN_BRIGHT+"Default objects dropped."+EditConsole.RESET);
                     } else {
                         System.out.println(EditConsole.RED_BRIGHT+"Error: There are no default objects."+EditConsole.RESET);
                     }
                     editConsole.stopScreen(menuOpt);
                     break;
-                /**
-                 * This is the option to create a new object Vendor.
-                 */
                 case "CV":
                     do {
                         menu.createVendorMenu(name, active);
@@ -95,11 +79,11 @@ public class Main {
                                 } else {
                                     added = true;
                                     controller.addVendorToInstances(name, active);
-                                    System.out.println("Vendor added.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Vendor added."+EditConsole.RESET);
                                 }
                                 break;
                             case "EW":
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 break;
                             default:
                                 System.out.println(EditConsole.RED_BRIGHT+"Error: Invalid option"+EditConsole.RESET);
@@ -109,9 +93,6 @@ public class Main {
                         editConsole.clearScreen();
                     } while (!option.equals("EW") && !added);
                     break;
-                /**
-                 * This is the option to create a new object Client.
-                 */
                 case "CC":
                     do {
                         menu.createClientMenu(name, active);
@@ -134,12 +115,12 @@ public class Main {
                                 } else {
                                     added = true;
                                     controller.addClientToInstances(name, active);
-                                    System.out.println("Client added.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Client added."+EditConsole.RESET);
                                 }
                                 break;
                             case "EW":
                                 editConsole.stopScreen(option);
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 break;
                             default:
                                 System.out.println(EditConsole.RED_BRIGHT+"Error: Invalid option"+EditConsole.RESET);
@@ -149,9 +130,6 @@ public class Main {
                         editConsole.clearScreen();
                     } while (!option.equals("EW") && !added);
                     break;
-                /**
-                 * This is the option to create a new object Product.
-                 */
                 case "CP":
                     do {
                         menu.createProductMenu(name, price, nutriscore, id, vendorName);
@@ -220,11 +198,11 @@ public class Main {
                                 if (nameEntered && priceEntered && nutriscoreEntered && vendorIDEntered) {
                                     added = true;
                                     controller.addProductToInstances(name, price, nutriscore, vendor);
-                                    System.out.println("Product added.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Product added."+EditConsole.RESET);
                                 }
                                 break;
                             case "EW":
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 editConsole.stopScreen(option);
                                 break;
                             default:
@@ -234,9 +212,6 @@ public class Main {
                         }
                     } while (!option.equals("EW") && !added);
                     break;
-                /**
-                 * This is the option to create a new object Order.
-                 */
                 case "CO":
                     do {
                         menu.createOrderMenu(id, name, products);
@@ -296,7 +271,7 @@ public class Main {
                                 break;
                             case "EW":
                                 editConsole.clearScreen();
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 editConsole.stopScreen(option);
                                 break;
                             default:
@@ -306,58 +281,34 @@ public class Main {
                         }
                     } while (!option.equals("EW") && !added);
                     break;
-                /**
-                 * This is the option to list all the objects added to the running program.
-                 */
                 case "LA":
                     menu.listAllObjectsMenu();
                     editConsole.stopScreen(option);
                     break;
-                /**
-                 * This is the option to list all the Vendor objects added to the running program.
-                 */
                 case "LV":
                     menu.listVendorMenu();
                     editConsole.stopScreen(option);
                     break;
-                /**
-                 * This is the option to list all the Client objects added to the running program.
-                 */
                 case "LC":
                     menu.listClientMenu();
                     editConsole.stopScreen(option);
                     break;
-                /**
-                 * This is the option to list all the Product objects added to the running program.
-                 */
                 case "LP":
                     menu.listProductMenu();
                     editConsole.stopScreen(option);
                     break;
-                /**
-                 * This is the option to list all the Order objects added to the running program.
-                 */
                 case "LO":
                     menu.listOrderMenu();
                     editConsole.stopScreen(option);
                     break;
-                /**
-                 * This is the option to list all the Product objects by only the ID from a specified object Vendor added to the running program.
-                 */
                 case "LPV":
                     menu.listProductByVendorMenu(read.readInt());
                     editConsole.stopScreen(option);
                     break;
-                /**
-                 * This is the option to list all the Order objects by only the ID from a specified object Client added to the running program.
-                 */
                 case "LOC":
                     menu.listOrderByClientMenu(read.readInt());
                     editConsole.stopScreen(option);
                     break;
-                /**
-                 * This is the option to edit a Vendor object by the ID assigned to it.
-                 */
                 case "EV":
                     boolean vendorSelected = false;
                     wantedToExit = false;
@@ -399,19 +350,19 @@ public class Main {
                                     id = 0;
                                 } else {
                                     vendorSelected = true;
-                                    System.out.println("Vendor selected.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Vendor selected."+EditConsole.RESET);
                                 }
                                 break;
                             case "C":
                                 if (vendorSelected) {
-                                    System.out.println("Continuing to the edit menu...");
+                                    System.out.println(EditConsole.CYAN_BRIGHT+"Continuing to the edit menu..."+EditConsole.RESET);
                                 } else {
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: You must select a Vendor first."+EditConsole.RESET);
                                 }
                                 break;
                             case "EW":
                                 wantedToExit = true;
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 break;
                         }
                         editConsole.stopScreen(option);
@@ -437,7 +388,7 @@ public class Main {
                                 case "DROP":
                                     editConsole.clearScreen();
                                     controller.getVendorInstances().remove(index);
-                                    System.out.println("Vendor dropped.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Vendor dropped."+EditConsole.RESET);
                                     added = true;
                                     break;
                                 case "FS":
@@ -453,13 +404,13 @@ public class Main {
                                                     controller.getVendorInstances().get(i).setVendorActive(active);
                                                 }
                                             }
-                                            System.out.println("Vendor changed.");
+                                            System.out.println(EditConsole.GREEN_BRIGHT+"Vendor changed."+EditConsole.RESET);
                                         }
                                     }
                                     else {System.out.println(EditConsole.RED_BRIGHT+"Error: You must change a value or just go 'EW'."+EditConsole.RESET);}
                                     break;
                                 case "EW":
-                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                     break;
                                 default:
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: Invalid option"+EditConsole.RESET);
@@ -470,9 +421,6 @@ public class Main {
                         } while (!option.equals("EW") && !added);
                     }
                     break;
-                /**
-                 * This is the option to edit a Client object by the ID assigned to it.
-                 */
                 case "EC":
                     boolean clientSelected = false;
                     wantedToExit = false;
@@ -514,19 +462,19 @@ public class Main {
                                     id = 0;
                                 } else {
                                     clientSelected = true;
-                                    System.out.println("Client selected.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Client selected."+EditConsole.RESET);
                                 }
                                 break;
                             case "C":
                                 if (clientSelected) {
-                                    System.out.println("Continuing to the edit menu...");
+                                    System.out.println(EditConsole.YELLOW_BRIGHT+"Continuing to the edit menu..."+EditConsole.RESET);
                                 } else {
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: You must select a Client first."+EditConsole.RESET);
                                 }
                                 break;
                             case "EW":
                                 wantedToExit = true;
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 break;
                         }
                         editConsole.stopScreen(option);
@@ -552,7 +500,7 @@ public class Main {
                                 case "DROP":
                                     editConsole.clearScreen();
                                     controller.getClientInstances().remove(index);
-                                    System.out.println("Client dropped.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Client dropped."+EditConsole.RESET);
                                     added = true;
                                     break;
                                 case "FS":
@@ -568,13 +516,13 @@ public class Main {
                                                     controller.getClientInstances().get(i).setClientActive(active);
                                                 }
                                             }
-                                            System.out.println("Client changed.");
+                                            System.out.println(EditConsole.GREEN_BRIGHT+"Client changed."+EditConsole.RESET);
                                         }
                                     }
                                     else {System.out.println(EditConsole.RED_BRIGHT+"Error: You must change a value or just go 'EW'."+EditConsole.RESET);}
                                     break;
                                 case "EW":
-                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                     break;
                                 default:
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: Invalid option"+EditConsole.RESET);
@@ -585,9 +533,6 @@ public class Main {
                         } while (!option.equals("EW") && !added);
                     }
                     break;
-                /**
-                 * This is the option to edit a Product object by the ID assigned to it.
-                 */
                 case "EP":
                     boolean productSelected = false;
                     wantedToExit = false;
@@ -631,19 +576,19 @@ public class Main {
                                     id = 0;
                                 } else {
                                     productSelected = true;
-                                    System.out.println("Product selected.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Product selected."+EditConsole.RESET);
                                 }
                                 break;
                             case "C":
                                 if (productSelected) {
-                                    System.out.println("Continuing to the edit menu...");
+                                    System.out.println(EditConsole.CYAN_BRIGHT+"Continuing to the edit menu..."+EditConsole.RESET);
                                 } else {
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: You must select a Product first."+EditConsole.RESET);
                                 }
                                 break;
                             case "EW":
                                 wantedToExit = true;
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 break;
                         }
                         editConsole.stopScreen(option);
@@ -689,7 +634,7 @@ public class Main {
                                 case "DROP":
                                     editConsole.clearScreen();
                                     controller.getProductInstances().remove(index);
-                                    System.out.println("Product dropped.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Product dropped."+EditConsole.RESET);
                                     added = true;
                                     break;
                                 case "VAV":
@@ -738,13 +683,13 @@ public class Main {
                                                     }
                                                 }
                                             }
-                                            System.out.println("Product changed.");
+                                            System.out.println(EditConsole.GREEN_BRIGHT+"Product changed."+EditConsole.RESET);
                                         }
                                     }
                                     else {System.out.println(EditConsole.RED_BRIGHT+"Error: You must change a value or just go 'EW'."+EditConsole.RESET);}
                                     break;
                                 case "EW":
-                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                     break;
                                 default:
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: Invalid option"+EditConsole.RESET);
@@ -755,9 +700,6 @@ public class Main {
                         } while (!option.equals("EW") && !added);
                     }
                     break;
-                /**
-                 * This is the option to edit a Order object by the ID assigned to it.
-                 */
                 case "EO":
                     boolean orderSelected = false;
                     wantedToExit = false;
@@ -808,19 +750,19 @@ public class Main {
                                     id = 0;
                                 } else {
                                     orderSelected = true;
-                                    System.out.println("Order selected.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Order selected."+EditConsole.RESET);
                                 }
                                 break;
                             case "C":
                                 if (orderSelected) {
-                                    System.out.println("Continuing to the edit menu...");
+                                    System.out.println(EditConsole.CYAN_BRIGHT+"Continuing to the edit menu..."+EditConsole.RESET);
                                 } else {
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: You must select an Order first."+EditConsole.RESET);
                                 }
                                 break;
                             case "EW":
                                 wantedToExit = true;
-                                System.out.println("Wiping all changes and returning to the main menu.");
+                                System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                 break;
                         }
                         editConsole.stopScreen(option);
@@ -856,7 +798,7 @@ public class Main {
                                 case "DROP":
                                     editConsole.clearScreen();
                                     controller.getOrderInstances().remove(index);
-                                    System.out.println("Order dropped.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Order dropped."+EditConsole.RESET);
                                     added = true;
                                     break;
                                 case "VAC":
@@ -903,13 +845,13 @@ public class Main {
                                             controller.getOrderInstances().get(id).setOrderPaid(active);
                                             controller.getOrderInstances().get(id).setProducts(products);
                                             added = true;
-                                            System.out.println("Order changed.");
+                                            System.out.println(EditConsole.GREEN_BRIGHT+"Order changed."+EditConsole.RESET);
                                         }
                                     }
                                     else {System.out.println(EditConsole.RED_BRIGHT+"Error: You must change a value or just go 'EW'."+EditConsole.RESET);}
                                     break;
                                 case "EW":
-                                    System.out.println("Wiping all changes and returning to the main menu.");
+                                    System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
                                     break;
                                 default:
                                     System.out.println(EditConsole.RED_BRIGHT+"Error: Invalid option"+EditConsole.RESET);
@@ -920,9 +862,6 @@ public class Main {
                         } while (!option.equals("EW") && !added);
                     }
                     break;
-                /**
-                 * This is the option is the default option for the main menu to exit the program.
-                 */
                 case "EX":
                     editConsole.clearScreen();
                     menu.endMenu();
