@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+
 /**
  * This class is the main class of the Drop-shipping application.
  * It contains the main method that runs the application.
+ *
  * @author John Smith
  * @version 1.0
  */
