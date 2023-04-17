@@ -1,5 +1,4 @@
 @startuml
-
 !theme reddress-darkgreen
 
 class Client {
@@ -213,4 +212,16 @@ class EditConsole {
 + void clearScreen()
 + void stopScreen(String)
 }
+
+Main "1" --> "1" Controller
+Main "1" --> "1" EditConsole
+Main "1" --> "1" Menu
+Main "1" --> "1" Read
+
+
+Controller "1" o--> "1" Client
+Controller "1" o--> "1" Order
+Controller "1" o--> "1" Vendor
+Controller "1" o--> "1" Product
+
 @enduml
