@@ -1,4 +1,7 @@
 @startuml
+
+!theme reddress-darkgreen
+
 class Client {
 - int clientID
 - String clientName
