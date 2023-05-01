@@ -5,7 +5,6 @@ import java.util.ArrayList;
  The Order class represents an order made by a client, including the order ID, date, client details,
  whether it has been paid or not, product quantity, total price and the products included in the order.
  */
-@SuppressWarnings({"ALL", "GrazieInspection"})
 public class Order {
     // * Attributes
     /**
@@ -32,12 +31,12 @@ public class Order {
 
      The total price of the order.
      */
-    private final float totalPrice;
+    private float totalPrice;
     /**
 
      The list of products included in the order.
      */
-    private ArrayList<Product> products;
+    private final ArrayList<ProductOnOrder> products;
     /**
 
      The controller used to manage this order instance.
@@ -55,13 +54,13 @@ public class Order {
      @param client the client who made the order
      @param products the list of products ordered
      */
-    public Order(Client client, ArrayList<Product> products) {
+    public Order(Client client, ArrayList<ProductOnOrder> products) {
         this.orderID = getBiggestOrderId() + 1;
         this.orderDate = LocalDate.now();
         this.client = client;
         this.orderPaid = false;
         this.products = products;
-        this.totalPrice = getTotalPrice();
+        this.totalPrice = controller.getTotalPrice(products);
     }
     // * Getters and Setters
     /**
@@ -120,22 +119,19 @@ public class Order {
     public void setOrderPaid(boolean orderPaid) {
         this.orderPaid = orderPaid;
     }
-    /**
 
-     Returns the list of products in this order.
-     @return the list of products in this order.
-     */
-    public ArrayList<Product> getProducts() {
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public ArrayList<ProductOnOrder> getProducts() {
         return products;
     }
-    /**
 
-     Sets the list of products in this order to the specified value.
-     @param products the new list of products in this order.
-     */
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
     /**
 
      Returns the biggest order ID in the controller's list of order instances.
@@ -152,18 +148,7 @@ public class Order {
         }
         return biggest;
     }
-    /**
 
-     Calculates the total price of all products in the list.
-     @return The total price of all products in the list.
-     */
-    public float getTotalPrice() {
-        float totalPrice = 0;
-        for (Product product : products) {
-            totalPrice += product.getProductPrice();
-        }
-        return totalPrice;
-    }
     // * Methods
     /**
 
@@ -174,25 +159,18 @@ public class Order {
      of the controller object associated with this order.
      @return a string representation of this order object.
      */
+
     public String toString() {
-        String finalString =
-              "   ◢■■■■■■■■■■■■■■■■■■■■■■■■■■◣" +
-            "\n     Order ▶ "+ orderID + " ◀"+
-            "\n    ■■■■■■■■■■■■■■■■■■■■■■■■■■" +
-            "\n     ID: " + orderID +
-            "\n     Date: " + orderDate +
-            "\n     Paid: " + orderPaid +
-            "\n     Client ID: " + client.getClientID() +
-            "\n     Client Name: " + client.getClientName() +
-            "\n     Total Price: " + totalPrice +
-            "\n     ***************************" +
-            "\n     *      SHOPPING LIST      *" +
-            "\n     *   ID|Name|QTY|€/U|€/T   *" +
-            "\n     *  *********************  *";
-            finalString += controller.printOutProductList(orderID);
-        finalString +=
-            "\n     ***************************"+
-            "\n   ◥■■■■■■■■■■■■■■■■■■■■■■■■■■◤";
-        return finalString;
+        return  "   ◢■■■■■■■■■■■■■■■■■■■■■■■■■■◣" +
+                "\n     Order ▶ "+ orderID + " ◀"+
+                "\n    ■■■■■■■■■■■■■■■■■■■■■■■■■■" +
+                "\n     ID: " + orderID +
+                "\n     Date: " + orderDate +
+                "\n     Paid: " + orderPaid +
+                "\n     Client ID: " + client.getClientID() +
+                "\n     Client Name: " + client.getClientName() +
+                "\n     Total Price: " + totalPrice + " €\n"+
+                controller.getShoppingList(this.products) +
+                "\n   ◥■■■■■■■■■■■■■■■■■■■■■■■■■■◤";
     }
 }

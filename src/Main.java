@@ -40,7 +40,7 @@ public class Main {
             editConsole.clearScreen();
             String option = "";
             boolean wantedToExit;
-            ArrayList<Product> products = new ArrayList<>();
+            ArrayList<ProductOnOrder> products = new ArrayList<>();
             int productId;
             switch (menuOpt) {
                 case "AD":
@@ -215,6 +215,7 @@ public class Main {
                     } while (!option.equals("EW") && !added);
                     break;
                 case "CO":
+                    Product prod = null;
                     do {
                         menu.createOrderMenu(id, name, products);
                         System.out.print("Your choice: ");
@@ -245,15 +246,25 @@ public class Main {
                             case "API":
                                 editConsole.clearScreen();
                                 System.out.print("Enter the product ID: ");
-                                productId = read.readInt();
-                                controller.addProductToList(productId, products, read.readProductQTY(productId));
+                                prod = controller.getProductById(read.readInt());
+                                if (prod != null) {
+                                    System.out.print("And how many?: ");
+                                    System.out.println(EditConsole.GREEN_BRIGHT + controller.addProductToOrder(prod, products, read.readInt()) + EditConsole.RESET);
+                                }
+                                else {System.out.println(EditConsole.RED_BRIGHT + "Error: ID entered is not correct." + EditConsole.RESET);}
                                 editConsole.stopScreen(option);
                                 break;
                             case "DPI":
                                 editConsole.clearScreen();
-                                System.out.print("Enter the product ID: ");
-                                productId = read.readInt();
-                                controller.dropProductFromList(productId, products, read.readProductQTY(productId));
+                                System.out.print("Enter the product IN LIST ID: ");
+                                id = read.readInt();
+                                if (id > 0 || id <= products.size()) {
+                                    System.out.print("And how many?: ");
+                                    System.out.println(EditConsole.GREEN_BRIGHT + controller.dropProductFromOrder(id, products, read.readInt()) + EditConsole.RESET);
+                                } else {
+                                    System.out.println(EditConsole.RED_BRIGHT + "Error: ID entered is not correct." + EditConsole.RESET);
+                                }
+
                                 editConsole.stopScreen(option);
                                 break;
                             case "FS":
@@ -267,7 +278,7 @@ public class Main {
                                 if (clientAdded && productAdded) {
                                     controller.addOrderToInstances(client, products);
                                     added = true;
-                                    System.out.println("Order added.");
+                                    System.out.println(EditConsole.GREEN_BRIGHT+"Order added."+EditConsole.RESET);
                                 }
                                 editConsole.stopScreen(option);
                                 break;
@@ -705,13 +716,12 @@ public class Main {
                 case "EO":
                     boolean orderSelected = false;
                     wantedToExit = false;
+                    Order order = null;
+                    // ! Remember that in this case:
+                    // !   active: is the same as paid, just to reutilice attributes
+                    // !   vendorID: is an attribute of client, just to reutilice attributes
+                    // !   vendorName: is an attribute of client, just to reutilice attributes
                     do {
-                        /*
-                            ! Remember that in this case:
-                            !   active: is the same as paid, just to reutilice attributes
-                            !   vendorID: is an attribute of client, just to reutilice attributes
-                            !   vendorName: is an attribute of client, just to reutilice attributes
-                         */
                         menu.selectOrderMenu(id, active, vendorId, vendorName, price);
                         System.out.print("Your choice: ");
                         option = read.readMenuOpt();
@@ -725,34 +735,15 @@ public class Main {
                                 boolean found = false;
                                 boolean notADefaultObject = true;
                                 System.out.print("\nOk, so tell me the ID to edit: ");
-                                id = read.readInt();
-                                for (int i = 0; i < controller.getOrderInstances().size(); i++) {
-                                    if (controller.getOrderInstances().get(i).getOrderID() == id) {
-                                        index = i;
-                                        for (int j = 0; j < controller.getDefaultObjectsOrder().size(); j++) {
-                                            if (controller.getDefaultObjectsOrder().get(j) == id) {
-                                                notADefaultObject = false;
-                                                break;
-                                            }
-                                        }
-                                        if (notADefaultObject) {
-                                            id = controller.getOrderInstances().get(i).getOrderID();
-                                            vendorId = controller.getOrderInstances().get(i).getClient().getClientID();
-                                            vendorName = controller.getOrderInstances().get(i).getClient().getClientName();
-                                            price = controller.getOrderInstances().get(i).getTotalPrice();
-                                            active = controller.getOrderInstances().get(i).getOrderPaid();
-                                        }
-                                        found = true;
-                                    }
-                                }
-                                if (!found) {
-                                    System.out.println(EditConsole.RED_BRIGHT+"Error: Order not found."+EditConsole.RESET);
-                                } else if (!notADefaultObject) {
-                                    System.out.println(EditConsole.RED_BRIGHT+"Error: You cannot edit a default object."+EditConsole.RESET);
-                                    id = 0;
-                                } else {
+                                order = controller.findOrderById(read.readInt());
+                                if (order != null) {
                                     orderSelected = true;
-                                    System.out.println(EditConsole.GREEN_BRIGHT+"Order selected."+EditConsole.RESET);
+                                    id = order.getOrderID();
+                                    active = order.getOrderPaid();
+                                    vendorId = order.getClient().getClientID();
+                                    vendorName = order.getClient().getClientName();
+                                    price = order.getTotalPrice();
+                                    products = order.getProducts();
                                 }
                                 break;
                             case "C":
@@ -770,93 +761,45 @@ public class Main {
                         editConsole.stopScreen(option);
                         editConsole.clearScreen();
                     } while (!option.equals("EW") && (!option.equals("C") || !orderSelected));
-                    products = controller.getOrderInstances().get(index).getProducts();
-                    client = controller.getOrderInstances().get(index).getClient();
+
                     if (orderSelected && !wantedToExit) {
                         do {
                             menu.editOrderMenu(vendorId, vendorName, active, products);
                             System.out.print("Your choice: ");
                             option = read.readMenuOpt();
-                            editConsole.clearScreen();
+                            editConsole.stopScreen(option);
                             switch (option) {
-                                case "CC":
-                                    editConsole.clearScreen();
-                                    client = read.changeClient();
-                                    if (client != null) {
-                                        vendorId = client.getClientID();
-                                        vendorName = client.getClientName();
-                                    } else {
-                                        System.out.println(EditConsole.RED_BRIGHT+"Error: Client not found."+EditConsole.RESET);
-                                    }
-                                    read.readMenuOpt();
-                                    edited = true;
-                                    break;
                                 case "CP":
-                                    editConsole.clearScreen();
                                     active = read.changeActive();
                                     read.readMenuOpt();
                                     edited = true;
                                     break;
                                 case "DROP":
-                                    editConsole.clearScreen();
-                                    controller.getOrderInstances().remove(index);
-                                    System.out.println(EditConsole.GREEN_BRIGHT+"Order dropped."+EditConsole.RESET);
-                                    added = true;
-                                    break;
-                                case "VAC":
-                                    editConsole.clearScreen();
-                                    menu.listClientMenu();
-                                    editConsole.stopScreen(option);
-                                    break;
-                                case "VAP":
-                                    editConsole.clearScreen();
-                                    menu.listProductMenu();
-                                    editConsole.stopScreen(option);
-                                    break;
-                                case "API":
-                                    editConsole.clearScreen();
-                                    System.out.print("Enter the product ID: ");
-                                    productId = read.readInt();
-                                    controller.addProductToList(productId, products, read.readProductQTY(productId));
-                                    editConsole.stopScreen(option);
-                                    break;
-                                case "DPI":
-                                    editConsole.clearScreen();
-                                    System.out.print("Enter the product ID: ");
-                                    productId = read.readInt();
-                                    controller.dropProductFromList(productId, products, read.readProductQTY(productId));
-                                    editConsole.stopScreen(option);
-                                    break;
-                                case "FS":
-                                    if (edited) {
-                                        editConsole.clearScreen();
-                                        boolean clientAdded = false;
-                                        boolean productAdded = false;
-                                        if (client != null) {
-                                            clientAdded = true;
-                                        } else {
-                                            System.out.println(EditConsole.RED_BRIGHT+"Error: There is no Client selected."+EditConsole.RESET);
-                                        }
-                                        if (products.size() > 0) {
-                                            productAdded = true;
-                                        } else {
-                                            System.out.println(EditConsole.RED_BRIGHT+"Error: There are no Products added."+EditConsole.RESET);
-                                        }
-                                        if (clientAdded && productAdded) {
-                                            controller.getOrderInstances().get(id).setClient(client);
-                                            controller.getOrderInstances().get(id).setOrderPaid(active);
-                                            controller.getOrderInstances().get(id).setProducts(products);
+                                    boolean found = false;
+                                    for (int i = 0; i < controller.getOrderInstances().size(); i++) {
+                                        if (controller.getOrderInstances().get(i).getOrderID() == id) {
+                                            controller.getOrderInstances().remove(i);
+                                            System.out.println(EditConsole.GREEN_BRIGHT + "Order dropped." + EditConsole.RESET);
+                                            found = true;
                                             added = true;
-                                            System.out.println(EditConsole.GREEN_BRIGHT+"Order changed."+EditConsole.RESET);
                                         }
                                     }
-                                    else {System.out.println(EditConsole.RED_BRIGHT+"Error: You must change a value or just go 'EW'."+EditConsole.RESET);}
+                                    if (!found) System.out.println(EditConsole.RED_BRIGHT + "Error: Cannot find the order." + EditConsole.RESET);
+
+                                    break;
+                                case "FS":
+                                    if (!edited) {
+                                        System.out.println(EditConsole.RED_BRIGHT + "Error: Must edit something. If you don't want, just go EW." + EditConsole.RESET);
+                                    }
+                                    else {
+                                        System.out.println(EditConsole.GREEN_BRIGHT + "Order edited." + EditConsole.RESET);
+                                    }
                                     break;
                                 case "EW":
-                                    System.out.println(EditConsole.YELLOW_BRIGHT+"Wiping all changes and returning to the main menu."+EditConsole.RESET);
+                                    System.out.println(EditConsole.YELLOW_BRIGHT + "Wiping all changes and returning to the main menu." + EditConsole.RESET);
                                     break;
                                 default:
-                                    System.out.println(EditConsole.RED_BRIGHT+"Error: Invalid option"+EditConsole.RESET);
+                                    System.out.println(EditConsole.RED_BRIGHT + "Error: Invalid option" + EditConsole.RESET);
                                     break;
                             }
                             editConsole.stopScreen(option);

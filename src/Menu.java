@@ -175,7 +175,7 @@ public class Menu {
      @param name the name of the client creating the order
      @param products the list of products to be displayed in the menu
      */
-    public void createOrderMenu(int id, String name, ArrayList<Product> products) {
+    public void createOrderMenu(int id, String name, ArrayList<ProductOnOrder> products) {
         System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
         System.out.println("            Create Order            ");
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
@@ -203,12 +203,8 @@ public class Menu {
         System.out.println("     DPI. Drop Product By ID        ");
         System.out.println("   ╰─────────────────────────────╯  ");
         System.out.println("   ╭─────────────────────────────╮  ");
-        System.out.println("     ***************************");
-        System.out.println("     *      SHOPPING LIST      *");
-        System.out.println("     *   ID|Name|QTY|€/U|€/T   *");
-        System.out.println("     *  *********************  *");
-        System.out.println(controller.printOutProductList(products));
-        System.out.println("     ***************************");
+        System.out.print(controller.getShoppingList(products));
+        System.out.println("\n   ╰─────────────────────────────╯  ");
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
         System.out.println("     FS. Finish and Save            ");
         System.out.println("     EW. Exit Without Saving        ");
@@ -580,14 +576,13 @@ public class Menu {
     }
     /**
 
-     Displays the menu to edit an order with the actual values of the order.
-     Allows the user to change the client, paid status and products of the order.
-     @param id the ID of the client who made the order
-     @param name the name of the client who made the order
+     Displays the menu for editing an order, showing current and potential values for client ID, name, and paid status, as well as a shopping list of products on the order.
+     @param id the ID of the client associated with the order
+     @param name the name of the client associated with the order
      @param paid the paid status of the order
-     @param products the list of products in the order
+     @param products the list of products associated with the order
      */
-    public void editOrderMenu(int id, String name, boolean paid, ArrayList<Product> products) {
+    public void editOrderMenu(int id, String name, boolean paid, ArrayList<ProductOnOrder> products) {
         System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
         System.out.println("            Edit Order              ");
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
@@ -601,35 +596,14 @@ public class Menu {
         System.out.println("   ╭─────────────────────────────╮  ");
         System.out.println("            Change Values           ");
         System.out.println("    ─────────────────────────────   ");
-        System.out.println("     CC. Change Client              ");
         System.out.println("     CP. Change Paid                ");
         System.out.println("   ╰─────────────────────────────╯  ");
         System.out.println("   ╭─────────────────────────────╮  ");
-        System.out.println("            Drop Object             ");
-        System.out.println("    ─────────────────────────────   ");
-        System.out.println("     DROP. Drop Order               ");
-        System.out.println("   ╰─────────────────────────────╯  ");
-        System.out.println("   ╭─────────────────────────────╮  ");
-        System.out.println("             View Values            ");
-        System.out.println("    ─────────────────────────────   ");
-        System.out.println("     VAC. View Available Clients    ");
-        System.out.println("     VAP. View Available Products   ");
-        System.out.println("   ╰─────────────────────────────╯  ");
-        System.out.println("   ╭─────────────────────────────╮  ");
-        System.out.println("            Products                ");
-        System.out.println("    ─────────────────────────────   ");
-        System.out.println("     API. Add Product By ID         ");
-        System.out.println("     DPI. Drop Product By ID        ");
-        System.out.println("   ╰─────────────────────────────╯  ");
-        System.out.println("   ╭─────────────────────────────╮  ");
-        System.out.println("     ***************************");
-        System.out.println("     *      SHOPPING LIST      *");
-        System.out.println("     *   ID|Name|QTY|€/U|€/T   *");
-        System.out.println("     *  *********************  *");
-        System.out.println(controller.printOutProductList(products));
-        System.out.println("     ***************************");
+        System.out.print(controller.getShoppingList(products));
+        System.out.println("\n   ╰─────────────────────────────╯  ");
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
         System.out.println("     FS. Finish and Save            ");
+        System.out.println("     DROP. Drop order               ");
         System.out.println("     EW. Exit Without Saving        ");
         System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
     }

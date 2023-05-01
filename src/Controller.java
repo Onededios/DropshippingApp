@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
 
@@ -31,6 +30,13 @@ public class Controller {
     private static final ArrayList<Product> productInstances = new ArrayList<>();
     /**
 
+     A list of ProductOnOrder objects that represents the products on an order.
+     */
+    private static final ArrayList<ProductOnOrder> productOnOrderInstances = new ArrayList<>();
+
+    // ! Default objects
+    /**
+
      This is a private static final ArrayList of integers that stores the default objects related to vendors.
      */
     private static final ArrayList<Integer> defaultObjectsVendor = new ArrayList<>();
@@ -49,6 +55,11 @@ public class Controller {
      This is a private static final ArrayList of integers that stores the default objects related to orders.
      */
     private static final ArrayList<Integer> defaultObjectsOrder = new ArrayList<>();
+    /**
+
+     A list of integers representing the default objects for the ProductOnOrder class.
+     */
+    private static final ArrayList<Integer> defaultObjectsProductOnOrder = new ArrayList<>();
 
     // * Gets instances
     /**
@@ -83,11 +94,12 @@ public class Controller {
     public ArrayList<Product> getProductInstances() {
         return productInstances;
     }
-    /**
 
-     Returns the ArrayList of default objects related to vendors.
-     @return the ArrayList of default objects related to vendors.
-     */
+    public static ArrayList<ProductOnOrder> getProductOnOrderInstances() {
+        return productOnOrderInstances;
+    }
+
+    // ! Default objects
     public ArrayList<Integer> getDefaultObjectsVendor() {return defaultObjectsVendor;}
     /**
 
@@ -107,112 +119,153 @@ public class Controller {
      @return the ArrayList of default objects related to orders.
      */
     public ArrayList<Integer> getDefaultObjectsOrder() {return defaultObjectsOrder;}
+    /**
+
+     Returns a list of integers representing the default objects for the ProductOnOrder class.
+     @return an ArrayList of integers representing the default objects for the ProductOnOrder class.
+     */
+    public ArrayList<Integer> getDefaultObjectsProductOnOrder() {return defaultObjectsProductOnOrder;}
+
     // * Methods
     /**
 
-     Adds the specified quantity of a product with the given ID to the provided list of products.
-     @param id The ID of the product to be added.
-     @param products The list of products to which the product will be added.
-     @param qty The quantity of the product to be added.
+     Returns the Product object with the specified ID.
+     @param id the ID of the Product to retrieve
+     @return the Product object with the specified ID, or null if no Product with the specified ID is found
      */
-    public void addProductToList(int id, ArrayList<Product> products, int qty) {
+    public Product getProductById(int id){
+        for (int i = 0; i < productInstances.size(); i++) {
+            if (productInstances.get(i).getProductId() == id) {
+                return productInstances.get(i);
+            }
+        }
+        return null;
+    }
+    /**
+
+     Returns whether a Product object is in an ArrayList of ProductOnOrder objects.
+     @param product the Product object to search for
+     @param products the ArrayList of ProductOnOrder objects to search in
+     @return true if the Product object is found in the ArrayList, false otherwise
+     */
+    public boolean isProductInOrder(Product product, ArrayList<ProductOnOrder> products) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getProduct().getProductId() == product.getProductId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+
+     Adds a specified quantity of a Product object to an ArrayList of ProductOnOrder objects.
+     @param product the Product object to add
+     @param products the ArrayList of ProductOnOrder objects to add to
+     @param qty the quantity of the Product object to add
+     @return a String message indicating whether the Product object was successfully added to the ArrayList or not
+     */
+    public String addProductToOrder(Product product, ArrayList<ProductOnOrder> products, int qty) {
         if (qty > 0) {
-            // Add the specified quantity of the product to the list
-            for (Product productInstance : productInstances) {
-                if (productInstance.getProductId() == id) {
-                    for (int j = 0; j < qty; j++) {
-                        products.add(productInstance);
+            if(isProductInOrder(product, products)){
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getProduct().getProductId() == product.getProductId()) {
+                        products.get(i).setQty(products.get(i).getQty() + qty);
                     }
                 }
             }
-            System.out.println("Product/s added to order.");
+            else {
+                ProductOnOrder productOnOrder = new ProductOnOrder(product, qty, products);
+                products.add(productOnOrder);
+            }
+
+            return  "Products added to order.";
         }
+        return "Error: Quantity to add must be greater than 0. Added nothing.";
     }
     /**
 
-     Removes a specified quantity of a product with a given ID from the provided list of products.
-     @param id the ID of the product to be dropped
-     @param products the list of products to be modified
-     @param qty the quantity of the product to be dropped
+     Drops a specified quantity of a ProductOnOrder object from an ArrayList of ProductOnOrder objects.
+     @param id the ID of the ProductOnOrder object to drop
+     @param products the ArrayList of ProductOnOrder objects to drop from
+     @param qty the quantity of the ProductOnOrder object to drop
+     @return a String message indicating whether the ProductOnOrder object was successfully dropped from the ArrayList or not
      */
-    public void dropProductFromList(int id, ArrayList<Product> products, int qty) {
+    public String dropProductFromOrder(int id, ArrayList<ProductOnOrder> products, int qty) {
         if (qty > 0) {
-            boolean found;
-            int count = 0;
-            while (count < qty) {
-                found = false;
-                for (int j = 0; j < products.size(); j++) {
-                    if (products.get(j).getProductId() == id) {
-                        products.remove(j);
-                        found = true;
-                        count++;
-                        break;
+            for (int i = 0; i < products.size(); i++) {
+                if (products.get(i).getId() == id) {
+                    if (products.get(i).getQty() > qty) {
+                        products.get(i).setQty(products.get(i).getQty() - qty);
                     }
-                }
-                if (!found) {
-                    break;
-                }
-            }
-            System.out.println("Product/s dropped from order.");
-        }
-    }
-    /**
-
-     Returns a string that contains a formatted list of products ordered for a given order ID.
-     The list includes product ID, name, quantity, price per item, and total price for each unique product.
-     @param orderID the ID of the order to print the product list for
-     @return a formatted string with the list of products ordered for the given order ID
-     */
-    public String printOutProductList(int orderID) {
-        StringBuilder finalString = new StringBuilder();
-        HashSet<Integer> seenProductIDs = new HashSet<>();
-        for (Order orderInstance : orderInstances) {
-            if (orderInstance.getOrderID() == orderID) {
-                for (int j = 0; j < orderInstance.getProducts().size(); j++) {
-                    int actual = orderInstance.getProducts().get(j).getProductId();
-                    if (!seenProductIDs.contains(actual)) {
-                        seenProductIDs.add(actual);
-                        int count = 1;
-                        for (int k = j + 1; k < orderInstance.getProducts().size(); k++) {
-                            if (actual == orderInstance.getProducts().get(k).getProductId()) {
-                                count++;
-                            }
-                        }
-                        finalString.append("\n     * ").append(orderInstance.getProducts().get(j).getProductId()).append(" | ").append(orderInstance.getProducts().get(j).getProductName()).append(" | ").append(count).append(" | ").append(orderInstance.getProducts().get(j).getProductPrice()).append(" | ").append(count * orderInstance.getProducts().get(j).getProductPrice());
+                    else {
+                        products.remove(i);
                     }
                 }
             }
+            return "Products dropped from order.";
         }
-        return finalString.toString();
+        return "Error: Quantity to drop must be greater than 0. Dropped nothing.";
+    }
+
+    /**
+
+     Returns a formatted String representation of an ArrayList of ProductOnOrder objects, representing a shopping list.
+     @param products the ArrayList of ProductOnOrder objects to represent as a shopping list
+     @return a formatted String representation of the shopping list
+     */
+    public String getShoppingList(ArrayList<ProductOnOrder> products) {
+        String finalString =    "     ***************************" +
+                                "\n     *      SHOPPING LIST      *" +
+                                "\n     *   ID|Name|€/U|QTY|€/T   *" +
+                                "\n     *  *********************  *";
+        for (int i = 0; i < products.size(); i++) {
+            finalString +=      "\n     *  "+products.get(i);
+        }
+        finalString +=          "\n     ***************************";
+        return finalString;
+    }
+
+    /**
+
+     Calculates and returns the total price of an ArrayList of ProductOnOrder objects.
+     @param products the ArrayList of ProductOnOrder objects to calculate the total price of
+     @return the total price of the ProductOnOrder objects in the ArrayList
+     */
+    public float getTotalPrice(ArrayList<ProductOnOrder> products) {
+        float totalPrice = 0;
+        for (int i = 0; i < products.size(); i++) {
+            totalPrice += products.get(i).getTotalProductPrice();
+        }
+        return totalPrice;
     }
     /**
 
-     Generates a string that represents a list of products along with their respective details, based on an input ArrayList.
-     @param productList the list of products to be included in the output string
-     @return a string containing the product information for each unique product ID in the input ArrayList, including the ID, name, number of occurrences, price, and total cost for that product
+     Searches for an Order object in the system by its ID.
+     If the ID is associated with a default object, an error message is printed and null is returned.
+     If the ID is not found in the system, an error message is printed and null is returned.
+     @param id the ID of the Order object to search for
+     @return the Order object with the given ID if found, null otherwise
      */
-    public String printOutProductList(ArrayList<Product> productList) {
-        StringBuilder finalString = new StringBuilder();
-        HashSet<Integer> seenProductIDs = new HashSet<>();
-        for (int i = 0; i < productList.size(); i++) {
-            int actual = productList.get(i).getProductId();
-            if (!seenProductIDs.contains(actual)) {
-                seenProductIDs.add(actual);
-                int count = 1;
-                for (int j = i + 1; j < productList.size(); j++) {
-                    if (actual == productList.get(j).getProductId()) { count++; }
-                }
-                finalString.append("\n     * ").append(productList.get(i).getProductId()).append(" | ").append(productList.get(i).getProductName()).append(" | ").append(count).append(" | ").append(productList.get(i).getProductPrice()).append(" | ").append(count * productList.get(i).getProductPrice());
+    public Order findOrderById(int id) {
+        boolean defaultObj = false;
+        for (int j = 0; j < getDefaultObjectsOrder().size(); j++) {
+            if (getDefaultObjectsOrder().get(j) == id) {
+                defaultObj = true;
+                System.out.println(EditConsole.RED_BRIGHT+"Error: You cannot edit a default object."+EditConsole.RESET);
             }
         }
-        float total = 0;
-        for (Product product : productList) {
-            total += product.getProductPrice();
+        boolean found = false;
+        if (!defaultObj) {
+            for (int i = 0; i < getOrderInstances().size(); i++) {
+                if (getOrderInstances().get(i).getOrderID() == id) {
+                    System.out.println(EditConsole.GREEN_BRIGHT+"Order selected."+EditConsole.RESET);
+                    return getOrderInstances().get(i);
+                }
+            }
         }
-        finalString.append("\n     * Amount: ").append(total);
-        return finalString.toString();
+        System.out.println(EditConsole.RED_BRIGHT+"Error: Order not found."+EditConsole.RESET);
+        return null;
     }
-
     // ! To add instances
         /**
 
@@ -249,7 +302,7 @@ public class Controller {
         /**
          Adds the specified order to the list of order instances.
          */
-        public void addOrderToInstances(Client client, ArrayList<Product> products) {
+        public void addOrderToInstances(Client client, ArrayList<ProductOnOrder> products) {
             Order order = new Order(client, products);
             orderInstances.add(order);
         }
@@ -380,44 +433,41 @@ public class Controller {
         defaultObjectsClient.add(c3.getClientID());
 
         // * Default orders
-        ArrayList<Product> products1 = new ArrayList<>();
-        products1.add(p1);
-        products1.add(p2);
-        products1.add(p15);
-        products1.add(p12);
-        products1.add(p10);
-        products1.add(p3);
-        products1.add(p3);
+        ArrayList<ProductOnOrder> products1 = new ArrayList<>();
+        addProductToOrder(p1, products1, 3);
+        addProductToOrder(p2, products1, 5);
+        addProductToOrder(p3, products1, 7);
+        addProductToOrder(p7, products1, 1);
+        addProductToOrder(p8, products1, 4);
 
 
-        ArrayList<Product> products2 = new ArrayList<>();
-        products2.add(p3);
-        products2.add(p15);
-        products2.add(p11);
-        products2.add(p8);
-        products2.add(p8);
+        ArrayList<ProductOnOrder> products2 = new ArrayList<>();
+        addProductToOrder(p2, products2, 1);
+        addProductToOrder(p9, products2, 8);
+        addProductToOrder(p10, products2, 3);
+        addProductToOrder(p12, products2, 10);
+        addProductToOrder(p13, products2, 20);
 
-        ArrayList<Product> products3 = new ArrayList<>();
-        products3.add(p5);
-        products3.add(p9);
-        products3.add(p4);
-        products3.add(p8);
-        products3.add(p8);
-        products3.add(p9);
-        products3.add(p9);
+        ArrayList<ProductOnOrder> products3 = new ArrayList<>();
+        addProductToOrder(p8, products3, 123);
+        addProductToOrder(p14, products3, 1);
+        addProductToOrder(p15, products3, 2);
+        addProductToOrder(p2, products3, 4);
+        addProductToOrder(p6, products3, 8);
+
 
         Order order1 = new Order(c1, products1);
         orderInstances.add(order1);
         defaultObjectsOrder.add(order1.getOrderID());
         Order order2 = new Order(c2, products2);
         orderInstances.add(order2);
-        defaultObjectsOrder.add(order1.getOrderID());
+        defaultObjectsOrder.add(order2.getOrderID());
         Order order3 = new Order(c1, products1);
         orderInstances.add(order3);
-        defaultObjectsOrder.add(order1.getOrderID());
+        defaultObjectsOrder.add(order3.getOrderID());
         Order order4 = new Order(c3, products3);
         orderInstances.add(order4);
-        defaultObjectsOrder.add(order1.getOrderID());
+        defaultObjectsOrder.add(order4.getOrderID());
     }
     /**
 
