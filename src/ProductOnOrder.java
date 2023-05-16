@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,7 @@ public class ProductOnOrder {
     The product added to the order.
     */
     private Product product;
+    @JsonIgnore
     /**
 
      The controller instance for managing the shopping list.
@@ -120,7 +123,7 @@ public class ProductOnOrder {
     public void setTotalProductPrice(float totalProductPrice) {
         this.totalProductPrice = totalProductPrice;
     }
-
+    @JsonIgnore
     /**
      * Returns the biggest ID of the products on the order.
      * @param product the list of products on the order

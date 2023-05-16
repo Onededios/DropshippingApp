@@ -1,3 +1,9 @@
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 /**
@@ -11,26 +17,29 @@ public class Vendor {
     /**
      * An integer representing the unique identifier of the vendor.
      */
+    @JsonProperty("vendorID")
     private int vendorId;
     /**
      * A string representing the name of the vendor.
      */
+    @JsonProperty("vendorName")
     private String vendorName;
     /**
      * A LocalDate representing the registration date of the vendor.
      */
-    private final LocalDate vendorRegDate;
+    @JsonProperty("vendorRegDate")
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate vendorRegDate;
     /**
      * A boolean representing the activity status of the vendor.
      */
+    @JsonProperty("vendorActive")
     private boolean vendorActive;
-    /**
-     * An ArrayList of Products representing the products offered by the vendor.
-     */
-    private ArrayList<Product> products;
     /**
      * A Controller object representing the controller that manages the system.
      */
+    @JsonIgnore
     final Controller controller = new Controller();
     // * Constructor
     /**
@@ -44,8 +53,10 @@ public class Vendor {
         this.vendorName = vendorName;
         this.vendorRegDate = LocalDate.now();
         this.vendorActive = vendorActive;
-        this.products = new ArrayList<>();
     }
+
+    public Vendor() {}
+
     // * Getters and Setters
     /**
      Returns the vendor's ID.
@@ -96,20 +107,7 @@ public class Vendor {
     public void setVendorActive(boolean vendorActive) {
         this.vendorActive = vendorActive;
     }
-    /**
-     Returns the list of products associated with the vendor.
-     @return an ArrayList of Product objects associated with the vendor.
-     */
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
-    /**
-     Sets the list of products associated with the vendor.
-     @param products an ArrayList of Product objects to associate with the vendor.
-     */
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
+    @JsonIgnore
     /**
      Returns the biggest vendor ID currently in the system.
      @return an integer representing the biggest vendor ID in the system.

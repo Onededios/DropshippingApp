@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -14,12 +15,14 @@ public class Main {
      *
      * @param args The command line arguments passed to the application.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Menu menu = new Menu();
         Read read = new Read();
         Controller controller = new Controller();
         EditConsole editConsole = new EditConsole();
         String menuOpt;
+        Maker maker = new Maker();
+        maker.initJson();
         do {
             String name = "";
             boolean active = false;
@@ -311,10 +314,12 @@ public class Main {
                     editConsole.stopScreen(option);
                     break;
                 case "LO":
-                    menu.listOrderMenu();
+                    System.out.print("Enter the client ID: ");
+                    menu.listOrderByClientMenu(read.readInt());
                     editConsole.stopScreen(option);
                     break;
                 case "LPV":
+                    System.out.print("Enter the product ID: ");
                     menu.listProductByVendorMenu(read.readInt());
                     editConsole.stopScreen(option);
                     break;
@@ -576,8 +581,7 @@ public class Main {
                                             name = controller.getProductInstances().get(i).getProductName();
                                             price = controller.getProductInstances().get(i).getProductPrice();
                                             nutriscore = controller.getProductInstances().get(i).getProductNutriScore();
-                                            vendorId = controller.getProductInstances().get(i).getVendor().getVendorId();
-                                            vendorName = controller.getProductInstances().get(i).getVendor().getVendorName();
+                                            vendorId = controller.getProductInstances().get(i).getVendorId();
                                             index = i;}
                                         found = true;
                                     }
@@ -691,7 +695,7 @@ public class Main {
                                                     controller.getProductInstances().get(i).setProductNutriScore(nutriscore);
                                                     for (int j = 0; j < controller.getVendorInstances().size(); j++) {
                                                         if (controller.getVendorInstances().get(j).getVendorId() == vendorId) {
-                                                            controller.getProductInstances().get(i).setVendor(controller.getVendorInstances().get(j));
+                                                            controller.getProductInstances().get(i).setVendorId(vendorId);
                                                         }
                                                     }
                                                 }
@@ -807,6 +811,24 @@ public class Main {
                         } while (!option.equals("EW") && !added);
                     }
                     break;
+                case "LDF":
+                    System.out.println(EditConsole.YELLOW+"\nData has been already dumped.\nThis will create duplicated data.\nAre you sure to continue? y/n"+EditConsole.RESET);
+                    System.out.print("\nYour choice: ");
+                    option = read.readMenuOpt();
+                    if (option.equals("Y")) {
+                        maker.readAllInstancesFromJson();
+                        System.out.println(EditConsole.GREEN_BRIGHT+"Data read from files."+EditConsole.RESET);
+                    }
+                    else {System.out.println("Thanks god, no data will be duplicated.");}
+                    editConsole.stopScreen(option);
+                    editConsole.clearScreen();
+                    break;
+                case "FSD":
+                    maker.addAllInstancesToJson();
+                    System.out.println(EditConsole.GREEN_BRIGHT+"All data saved into its respective files."+EditConsole.RESET);
+                    editConsole.clearScreen();
+                    menu.endMenu();
+                    break;
                 case "EX":
                     editConsole.clearScreen();
                     menu.endMenu();
@@ -816,6 +838,6 @@ public class Main {
                     editConsole.stopScreen(menuOpt);
                     break;
             }
-        } while (!menuOpt.equals("EX"));
+        } while (!menuOpt.equals("EX") && !menuOpt.equals("FSD"));
     }
 }

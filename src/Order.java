@@ -1,5 +1,11 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 /**
 
  The Order class represents an order made by a client, including the order ID, date, client details,
@@ -11,36 +17,45 @@ public class Order {
 
      The unique identifier for this order.
      */
+    @JsonProperty("orderID")
     private int orderID;
     /**
 
      The date when the order was made.
      */
-    private final LocalDate orderDate;
+    @JsonProperty("orderDate")
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate orderDate;
     /**
 
      The client who made the order.
      */
+    @JsonProperty("client")
     private Client client;
     /**
 
      Whether the order has been paid for.
      */
+    @JsonProperty("orderPaid")
     private boolean orderPaid;
     /**
 
      The total price of the order.
      */
+    @JsonProperty("totalPrice")
     private float totalPrice;
     /**
 
      The list of products included in the order.
      */
-    private final ArrayList<ProductOnOrder> products;
+    @JsonProperty("products")
+    private ArrayList<ProductOnOrder> products;
     /**
 
      The controller used to manage this order instance.
      */
+    @JsonIgnore
     final Controller controller = new Controller();
     // * Constructors
     /**
@@ -60,8 +75,11 @@ public class Order {
         this.client = client;
         this.orderPaid = false;
         this.products = products;
-        this.totalPrice = controller.getTotalPrice(products);
+        this.totalPrice = getTotalPrice(products);
     }
+
+    public Order() {}
+
     // * Getters and Setters
     /**
 
@@ -148,7 +166,19 @@ public class Order {
         }
         return biggest;
     }
+    /**
 
+     Calculates and returns the total price of an ArrayList of ProductOnOrder objects.
+     @param products the ArrayList of ProductOnOrder objects to calculate the total price of
+     @return the total price of the ProductOnOrder objects in the ArrayList
+     */
+    public float getTotalPrice(ArrayList<ProductOnOrder> products) {
+        float totalPrice = 0;
+        for (int i = 0; i < products.size(); i++) {
+            totalPrice += products.get(i).getTotalProductPrice();
+        }
+        return totalPrice;
+    }
     // * Methods
     /**
 

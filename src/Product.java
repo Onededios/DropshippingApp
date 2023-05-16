@@ -32,7 +32,7 @@ public class Product {
 
      The vendor of the product.
      */
-    private Vendor vendor;
+    private int vendorId;
     /**
 
      A controller object used to interact with the product.
@@ -51,9 +51,11 @@ public class Product {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productNutriScore = productNutriScore;
-        int productQuantity = 0;
-        this.vendor = vendor;
+        this.vendorId = vendor.getVendorId();
     }
+
+    public Product() {}
+
     // * Getters & setters
     /**
 
@@ -119,22 +121,15 @@ public class Product {
     public void setProductNutriScore(char productNutriScore) {
         this.productNutriScore = productNutriScore;
     }
-    /**
 
-     Returns the vendor of the product.
-     @return the vendor of the product
-     */
-    public Vendor getVendor() {
-        return vendor;
+    public int getVendorId() {
+        return vendorId;
     }
-    /**
 
-     Sets the vendor of the product to the specified value.
-     @param vendor the new vendor of the product
-     */
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
+    public void setVendorId(int vendorId) {
+        this.vendorId = vendorId;
     }
+
     /**
 
      This method returns the largest product ID currently in use by the controller.
@@ -165,8 +160,7 @@ public class Product {
                 "\n     Name: "+productName +
                 "\n     Price: "+productPrice +
                 "\n     NutriScore: "+productNutriScore +
-                "\n     Vendor Id: "+vendor.getVendorId() +
-                "\n     Vendor Name: "+vendor.getVendorName() +
+                "\n     Vendor Id: "+vendorId+
                 "\n   └─╼━━━━━━━━━━━━━━━━━━━━━━━━━╾─┘";
     }
 }

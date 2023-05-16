@@ -153,7 +153,7 @@ public class EditConsole {
     }
 
     public void stopScreen(String inp) {
-        if (!inp.equals("EX") | inp.equals("FS")) {
+        if (!inp.equals("EX") | inp.equals("FS") | inp.equals("FSD")) {
             System.out.print("\nPress enter to return.");
             Scanner scanner = new Scanner(System.in);
             scanner.nextLine();

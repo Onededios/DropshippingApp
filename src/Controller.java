@@ -94,10 +94,15 @@ public class Controller {
     public ArrayList<Product> getProductInstances() {
         return productInstances;
     }
-
+    /**
+     * Returns an ArrayList of ProductOnOrder instances.
+     *
+     * @return The ArrayList of ProductOnOrder instances.
+     */
     public static ArrayList<ProductOnOrder> getProductOnOrderInstances() {
         return productOnOrderInstances;
     }
+
 
     // ! Default objects
     public ArrayList<Integer> getDefaultObjectsVendor() {return defaultObjectsVendor;}
@@ -227,19 +232,6 @@ public class Controller {
 
     /**
 
-     Calculates and returns the total price of an ArrayList of ProductOnOrder objects.
-     @param products the ArrayList of ProductOnOrder objects to calculate the total price of
-     @return the total price of the ProductOnOrder objects in the ArrayList
-     */
-    public float getTotalPrice(ArrayList<ProductOnOrder> products) {
-        float totalPrice = 0;
-        for (int i = 0; i < products.size(); i++) {
-            totalPrice += products.get(i).getTotalProductPrice();
-        }
-        return totalPrice;
-    }
-    /**
-
      Searches for an Order object in the system by its ID.
      If the ID is associated with a default object, an error message is printed and null is returned.
      If the ID is not found in the system, an error message is printed and null is returned.
@@ -280,13 +272,17 @@ public class Controller {
             productInstances.add(product);
         }
         /**
-
-         Creates a new client with the specified name and active status, and adds it to the list of client instances.
-         @param name the name of the client
-         @param active the active status of the client
+         * Creates a new client with the specified name and active status, and adds it to the list of client instances.
+         *
+         * @param name the name of the client
          */
-        public void addClientToInstances(String name, boolean active) {
+        public Client addClientToInstances(String name, boolean active) {
             Client client = new Client(name, active);
+            clientInstances.add(client);
+            return client;
+        }
+
+        public void addClientToInstancesJson(Client client) {
             clientInstances.add(client);
         }
         /**

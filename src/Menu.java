@@ -55,7 +55,9 @@ public class Menu {
         System.out.println("     EO. Edit Orders                ");
         System.out.println("   ╰─────────────────────────────╯  ");
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
-        System.out.println("     EX. Exit                       ");
+        System.out.println("     LDF. Load Data from File       ");
+        System.out.println("     FSD. Finish Saving Data        ");
+        System.out.println("     EX. Exit without saving data   ");
         System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
     }
     /**
@@ -301,7 +303,7 @@ public class Menu {
         System.out.println("   Listing products by Vendor "+vendorID);
         System.out.println("  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ");
         for (int i = 0; i < controller.getProductInstances().size() ; i++) {
-            if (controller.getProductInstances().get(i).getVendor().getVendorId() == vendorID) {
+            if (controller.getProductInstances().get(i).getVendorId() == vendorID) {
                 System.out.println(controller.getProductInstances().get(i).toString());
             }
         }
