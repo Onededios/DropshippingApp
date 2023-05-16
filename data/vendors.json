@@ -1,0 +1,31 @@
+[ {
+  "vendorName" : "MANOLO",
+  "vendorRegDate" : "2023-05-08",
+  "vendorActive" : false,
+  "vendorID" : 1
+}, {
+  "vendorName" : "MARIA",
+  "vendorRegDate" : "2023-04-22",
+  "vendorActive" : true,
+  "vendorID" : 2
+}, {
+  "vendorName" : "PEDRO",
+  "vendorRegDate" : "2023-05-10",
+  "vendorActive" : true,
+  "vendorID" : 3
+}, {
+  "vendorName" : "SOFIA",
+  "vendorRegDate" : "2023-05-12",
+  "vendorActive" : false,
+  "vendorID" : 4
+}, {
+  "vendorName" : "CARLOS",
+  "vendorRegDate" : "2023-05-14",
+  "vendorActive" : true,
+  "vendorID" : 5
+}, {
+  "vendorName" : "ANA",
+  "vendorRegDate" : "2023-05-16",
+  "vendorActive" : true,
+  "vendorID" : 6
+} ]

@@ -1,0 +1,31 @@
+[ {
+  "clientID" : 1,
+  "clientName" : "FELIPE",
+  "clientRegDate" : "2023-05-08",
+  "clientActive" : false
+}, {
+  "clientID" : 2,
+  "clientName" : "MARIA",
+  "clientRegDate" : "2023-04-22",
+  "clientActive" : true
+}, {
+  "clientID" : 3,
+  "clientName" : "PEDRO",
+  "clientRegDate" : "2023-05-10",
+  "clientActive" : true
+}, {
+  "clientID" : 4,
+  "clientName" : "SOFIA",
+  "clientRegDate" : "2023-05-12",
+  "clientActive" : false
+}, {
+  "clientID" : 5,
+  "clientName" : "CARLOS",
+  "clientRegDate" : "2023-05-14",
+  "clientActive" : true
+}, {
+  "clientID" : 6,
+  "clientName" : "ANA",
+  "clientRegDate" : "2023-05-16",
+  "clientActive" : true
+} ]

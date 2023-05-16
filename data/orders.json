@@ -1,0 +1,114 @@
+[ {
+  "orderID" : 6,
+  "orderDate" : "2023-05-08",
+  "client" : {
+    "clientID" : 1,
+    "clientName" : "FELIPE",
+    "clientRegDate" : "2023-05-08",
+    "clientActive" : false
+  },
+  "orderPaid" : false,
+  "totalPrice" : 400.0,
+  "products" : [ {
+    "product" : {
+      "productId" : 1,
+      "productName" : "MANZANA",
+      "productPrice" : 20.0,
+      "productNutriScore" : "A",
+      "vendorId" : 1
+    },
+    "qty" : 20,
+    "id" : 1,
+    "totalProductPrice" : 400.0
+  } ]
+}, {
+  "orderID" : 7,
+  "orderDate" : "2023-05-16",
+  "client" : {
+    "clientID" : 3,
+    "clientName" : "PEDRO",
+    "clientRegDate" : "2023-05-10",
+    "clientActive" : true
+  },
+  "orderPaid" : false,
+  "totalPrice" : 3480.0,
+  "products" : [ {
+    "product" : {
+      "productId" : 3,
+      "productName" : "PLÁTANO",
+      "productPrice" : 12.0,
+      "productNutriScore" : "A",
+      "vendorId" : 1
+    },
+    "qty" : 90,
+    "id" : 1,
+    "totalProductPrice" : 1080.0
+  }, {
+    "product" : {
+      "productId" : 6,
+      "productName" : "UVA",
+      "productPrice" : 30.0,
+      "productNutriScore" : "A",
+      "vendorId" : 2
+    },
+    "qty" : 80,
+    "id" : 2,
+    "totalProductPrice" : 2400.0
+  } ]
+}, {
+  "orderID" : 8,
+  "orderDate" : "2023-05-16",
+  "client" : {
+    "clientID" : 4,
+    "clientName" : "SOFIA",
+    "clientRegDate" : "2023-05-12",
+    "clientActive" : false
+  },
+  "orderPaid" : false,
+  "totalPrice" : 5713.0,
+  "products" : [ {
+    "product" : {
+      "productId" : 3,
+      "productName" : "PLÁTANO",
+      "productPrice" : 12.0,
+      "productNutriScore" : "A",
+      "vendorId" : 1
+    },
+    "qty" : 170,
+    "id" : 1,
+    "totalProductPrice" : 120.0
+  }, {
+    "product" : {
+      "productId" : 1,
+      "productName" : "MANZANA",
+      "productPrice" : 20.0,
+      "productNutriScore" : "A",
+      "vendorId" : 1
+    },
+    "qty" : 28,
+    "id" : 2,
+    "totalProductPrice" : 160.0
+  }, {
+    "product" : {
+      "productId" : 2,
+      "productName" : "NARANJA",
+      "productPrice" : 15.0,
+      "productNutriScore" : "B",
+      "vendorId" : 2
+    },
+    "qty" : 13,
+    "id" : 3,
+    "totalProductPrice" : 195.0
+  }, {
+    "product" : {
+      "productId" : 4,
+      "productName" : "PERA",
+      "productPrice" : 18.0,
+      "productNutriScore" : "B",
+      "vendorId" : 2
+    },
+    "qty" : 291,
+    "id" : 4,
+    "totalProductPrice" : 5238.0
+  } ]
+} ]
